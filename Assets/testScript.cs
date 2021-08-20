@@ -17,4 +17,9 @@ public class testScript : MonoBehaviour
     {
         Debug.Log("Stay");
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        Debug.Log("ColliderEnter");
+    }
 }
