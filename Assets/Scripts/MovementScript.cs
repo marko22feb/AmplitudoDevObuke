@@ -5,22 +5,23 @@ using UnityEngine;
 public class MovementScript : MonoBehaviour
 {
     public float speed;
+    private Animator playerAnimator;
+    private Rigidbody2D rigid;
 
     private void Start()
     {
-
+        Application.targetFrameRate = 100;
     }
 
     private void Awake()
     {
-
-
+        playerAnimator = GetComponent<Animator>();
+        rigid = GetComponent<Rigidbody2D>();
     }
 
     private void Update()
     {
-        float horizontal = 0;
-        float vertical = 0;
+        float horizontal = rigid.velocity.x;
         float sprintSpeed = speed;
 
         bool left = false;
@@ -36,17 +37,24 @@ public class MovementScript : MonoBehaviour
 
         if (!(left && right))
         {
-            if (left) horizontal = -1f;
-            if (right) horizontal = 1f;
+            if (left) horizontal = -1f * sprintSpeed * Time.deltaTime;
+            if (right) horizontal = 1f * sprintSpeed * Time.deltaTime;
         }
 
         if (!(up && down))
         {
-            if (down) vertical = -1f;
-            if (up) vertical = 1f;
+            if (down) { playerAnimator.SetBool("IsCrouched", true); }
         }
 
-        GetComponent<Rigidbody2D>().velocity = new Vector2(horizontal, vertical);
+        if (!down) { playerAnimator.SetBool("IsCrouched", false); }
+
+        if (left || right)
+        {
+            if (horizontal < 0) transform.rotation = new Quaternion(0, 180, 0, 0); else transform.rotation = new Quaternion(0, 0, 0, 0);
+        }
+
+        GetComponent<Rigidbody2D>().velocity = new Vector2(horizontal, rigid.velocity.y);
+        playerAnimator.SetFloat("HorizontalVelocity", horizontal);
     }
 
     private void FixedUpdate()
