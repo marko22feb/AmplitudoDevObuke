@@ -7,6 +7,7 @@ public class MovementScript : MonoBehaviour
     public float speed;
     private Animator playerAnimator;
     private Rigidbody2D rigid;
+    public GameController control;
 
     private void Start()
     {
@@ -17,6 +18,7 @@ public class MovementScript : MonoBehaviour
     {
         playerAnimator = GetComponent<Animator>();
         rigid = GetComponent<Rigidbody2D>();
+        control = GameObject.Find("GameController").GetComponent<GameController>();
     }
 
     private void Update()
@@ -29,11 +31,14 @@ public class MovementScript : MonoBehaviour
         bool up = false;
         bool down = false;
 
-        if (Input.GetKey(KeyCode.A)) left = true;
-        if (Input.GetKey(KeyCode.D)) right = true;
-        if (Input.GetKey(KeyCode.W)) up = true;
         if (Input.GetKey(KeyCode.S)) down = true;
-        if (Input.GetKey(KeyCode.LeftShift)) sprintSpeed = speed * 2;
+        if (!down)
+        {
+            if (Input.GetKey(KeyCode.A)) left = true;
+            if (Input.GetKey(KeyCode.D)) right = true;
+            if (Input.GetKey(KeyCode.W)) up = true;
+            if (Input.GetKey(KeyCode.LeftShift)) sprintSpeed = speed * 2;
+        }
 
         if (!(left && right))
         {
