@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class MovementScript : MonoBehaviour
 {
+    enum Direction {forward, backward, left, right };
+
+    private Direction prevDashDir = default;
     public float speed;
     private Animator playerAnimator;
     private Rigidbody2D rigid;
@@ -34,6 +37,11 @@ public class MovementScript : MonoBehaviour
         if (Input.GetKey(KeyCode.S)) down = true;
         if (!down)
         {
+            bool Detected = false;
+            if (Input.GetKeyUp(KeyCode.A)) DetectDoubleClick(Direction.left, out Detected);
+            if (Detected) return;
+            if (Input.GetKeyUp(KeyCode.D)) DetectDoubleClick(Direction.right, out Detected);
+            if (Detected) return;
             if (Input.GetKey(KeyCode.A)) left = true;
             if (Input.GetKey(KeyCode.D)) right = true;
             if (Input.GetKey(KeyCode.W)) up = true;
@@ -65,5 +73,34 @@ public class MovementScript : MonoBehaviour
     private void FixedUpdate()
     {
         
+    }
+
+    private void DetectDoubleClick (Direction dir, out bool Detected)
+    {
+        float distance = 0;
+        if (dir == prevDashDir)
+        {
+            if (dir == Direction.left) 
+            { 
+                distance = -3f; 
+            } else 
+            { 
+                distance = 3f; 
+            }
+
+            transform.position = new Vector3(transform.position.x + distance, transform.position.y, 0);
+            Detected = true;
+        } else
+        {
+            prevDashDir = dir;
+            Detected = false;
+            StartCoroutine(ResetDoubleClick());
+        }
+    }
+
+    IEnumerator ResetDoubleClick()
+    {
+        yield return new WaitForSeconds(0.4f);
+        prevDashDir = Direction.forward;
     }
 }

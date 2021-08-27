@@ -10,6 +10,7 @@ public class StatComponent : MonoBehaviour
     [SerializeField]
     float MaximumHealth = 100;
     public float CurrentHealth = 75;
+    public float DamageAmount = 50;
 
     Slider healthSlider;
     Text healthText;
