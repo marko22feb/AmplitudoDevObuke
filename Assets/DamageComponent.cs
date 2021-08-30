@@ -37,8 +37,8 @@ public class DamageComponent : MonoBehaviour
 
     IEnumerator iFramesAnim(GameObject target)
     {
-        target.GetComponent<Animator>().SetBool("IsDamaged", true);
+        target.GetComponent<Animator>().SetTrigger("IsDamaged");
         yield return new WaitForSeconds(iFrames);
-        target.GetComponent<Animator>().SetBool("IsDamaged", false);
+        target.GetComponent<Animator>().SetTrigger("DamageOver");
     }
 }
