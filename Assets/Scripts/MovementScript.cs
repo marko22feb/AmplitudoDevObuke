@@ -89,6 +89,7 @@ public class MovementScript : MonoBehaviour
 
         GetComponent<Rigidbody2D>().velocity = new Vector2(horizontal, vertical);
         playerAnimator.SetFloat("HorizontalVelocity", horizontal);
+        playerAnimator.SetFloat("VerticalVelocity", rigid.velocity.y);
     }
 
     private void FixedUpdate()
@@ -148,7 +149,7 @@ public class MovementScript : MonoBehaviour
     {
         RaycastHit2D hit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0, Vector2.down, 0.2f, floorLayer);
         if (hit.collider != null) isOnGround = true; else isOnGround = false;
-        Debug.Log(isOnGround);
+        playerAnimator.SetBool("IsOnGround", isOnGround);
     }
 
     IEnumerator ResetDoubleClick()
