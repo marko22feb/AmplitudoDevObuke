@@ -17,10 +17,10 @@ TagManager:
   - floor
   - 
   - 
+  - Enemy
+  - Player
   - 
-  - 
-  - 
-  - 
+  - InteractObject
   - 
   - 
   - 

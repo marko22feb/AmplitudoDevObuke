@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class GameController : MonoBehaviour
 {
     public static GameController control;
+    public GameObject Player;
     public int CoinsCount;
     private Text coinsText;
     public Color newTextColor = Color.white;
@@ -24,6 +25,7 @@ public class GameController : MonoBehaviour
             return;
         }
 
+        Player = GameObject.Find("Player");
         coinsText = GameObject.Find("CoinsText").GetComponent<Text>();
         UpdateCoinText();
         SceneManager.activeSceneChanged += OnNewLevel;
@@ -33,6 +35,7 @@ public class GameController : MonoBehaviour
     {
         if (control == this)
         {
+            Player = GameObject.Find("Player");
             coinsText = GameObject.Find("CoinsText").GetComponent<Text>();
             UpdateCoinText();
         }
@@ -49,3 +52,5 @@ public class GameController : MonoBehaviour
         coinsText.color = newTextColor;
     }
 }
+
+public enum InteractType { none, Door, Lever, Ladders };

@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LoadLevel : MonoBehaviour
+public class LoadLevel : InteractableObject
 {
     [SerializeField]
     string LevelName;
     public Scene SceneToLoad;
-    private void OnTriggerEnter2D(Collider2D collision)
+
+    public override void OnInteract()
     {
-        if (collision.tag == "Player")
-        {
-            SceneManager.LoadScene(LevelName, LoadSceneMode.Single);
-        }
+       if (DoOnce) return;
+        SceneManager.LoadScene(LevelName, LoadSceneMode.Single);
+        base.OnInteract();
     }
 }
