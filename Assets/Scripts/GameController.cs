@@ -1,5 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -11,6 +14,9 @@ public class GameController : MonoBehaviour
     public int CoinsCount;
     private Text coinsText;
     public Color newTextColor = Color.white;
+
+    bool IsNewGame = false;
+    string Username = "User";
 
     public void Awake()
     {
@@ -27,6 +33,10 @@ public class GameController : MonoBehaviour
 
         Player = GameObject.Find("Player");
         coinsText = GameObject.Find("CoinsText").GetComponent<Text>();
+
+        bool CanLoad;
+        LoadGame(out CanLoad);
+
         UpdateCoinText();
         SceneManager.activeSceneChanged += OnNewLevel;
     }
@@ -44,6 +54,7 @@ public class GameController : MonoBehaviour
     public void OnCoinsPickUp(int amount)
     {
         CoinsCount = CoinsCount + amount;
+        SaveGame();
         UpdateCoinText();
     }
 
@@ -51,6 +62,44 @@ public class GameController : MonoBehaviour
         coinsText.text = "Coins : " + CoinsCount;
         coinsText.color = newTextColor;
     }
+
+    void SaveGame()
+    {
+        BinaryFormatter binaryFormatter = new BinaryFormatter();
+        FileStream file = File.Create(Application.persistentDataPath + Username + ".123");
+        SaveGame save = new SaveGame();
+
+        save.CoinsAmount = CoinsCount;
+
+        binaryFormatter.Serialize(file, save);
+        file.Close();
+    }
+
+    void LoadGame(out bool Success)
+    {
+        if (File.Exists(Application.persistentDataPath  + Username + ".123"))
+        {
+            Success = true;
+
+            BinaryFormatter binaryFormatter = new BinaryFormatter();
+            FileStream file = File.Open(Application.persistentDataPath + Username + ".123", FileMode.Open);
+            SaveGame save = (SaveGame)binaryFormatter.Deserialize(file);
+
+            CoinsCount = save.CoinsAmount;
+
+            file.Close();
+
+        } 
+        else Success = false;
+    }
+}
+
+[Serializable]
+public class SaveGame
+{
+    public int CoinsAmount;
+    public int LastPlayedScene;
+    public float PlayerHealth;
 }
 
 public enum InteractType { none, Door, Lever, Ladders };

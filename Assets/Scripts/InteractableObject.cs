@@ -32,12 +32,14 @@ public class InteractableObject : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        GameController.control.Player.GetComponent<PlayerInput>().objectToInteractWith = this;
+        if (!collision.isTrigger)
+        GameController.control.Player.GetComponent<PlayerInput>().ActivateInteract(this);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        GameController.control.Player.GetComponent<PlayerInput>().objectToInteractWith = null;
+        if (!collision.isTrigger)
+            GameController.control.Player.GetComponent<PlayerInput>().ActivateInteract(null);
     }
 
     public virtual void OnInteract()

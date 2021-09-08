@@ -11,6 +11,7 @@ public class DamageComponent : MonoBehaviour
     {
         if (!CanDealDamage) return;
         StatComponent stats = GetComponent<StatComponent>();
+        if (stats == null) return;
         stats.ModifyBy(-collision.GetComponent<StatComponent>().DamageAmount);
         StartCoroutine(DelayDamage());
         StartCoroutine(iFramesAnim(gameObject));
