@@ -37,6 +37,8 @@ public class CoinsBox : MonoBehaviour
             bool random = false;
             if (i == 1) random = true;
 
+            temp.GetComponent<BoxCollider2D>().isTrigger = false;
+            temp.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
             temp.GetComponent<Rigidbody2D>().velocity = new Vector2(random ? possiblex:possibley, VelocityRange.z);
             if (MaxCoins <= 0) sr.sprite = EmptySprite;
         }

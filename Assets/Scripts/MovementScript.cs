@@ -66,7 +66,7 @@ public class MovementScript : MonoBehaviour
 
         if (!(left && right))
         {
-            if (!isOnGround) sprintSpeed = speed * 0.5f;
+           // if (!isOnGround) sprintSpeed = speed * 0.5f;
             if (left) horizontal = -sprintSpeed * Time.deltaTime;
             if (right) horizontal = sprintSpeed * Time.deltaTime;
         }
