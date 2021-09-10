@@ -2075,7 +2075,15 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: bdce2a9cb3d0242958c2593a3b8d8742, type: 3}
     - target: {fileID: 1127799529687803777, guid: 095b2a03dff3daa4bbe9db651c7cb274, type: 3}
+      propertyPath: items.Array.data[2].Icon
+      value: 
+      objectReference: {fileID: 21300000, guid: bdce2a9cb3d0242958c2593a3b8d8742, type: 3}
+    - target: {fileID: 1127799529687803777, guid: 095b2a03dff3daa4bbe9db651c7cb274, type: 3}
       propertyPath: items.Array.data[1].ItemID
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1127799529687803777, guid: 095b2a03dff3daa4bbe9db651c7cb274, type: 3}
+      propertyPath: items.Array.data[2].ItemID
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1127799529687803777, guid: 095b2a03dff3daa4bbe9db651c7cb274, type: 3}
@@ -2084,6 +2092,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1127799529687803777, guid: 095b2a03dff3daa4bbe9db651c7cb274, type: 3}
       propertyPath: items.Array.data[1].ItemName
+      value: Mana Potion
+      objectReference: {fileID: 0}
+    - target: {fileID: 1127799529687803777, guid: 095b2a03dff3daa4bbe9db651c7cb274, type: 3}
+      propertyPath: items.Array.data[2].ItemName
       value: Mana Potion
       objectReference: {fileID: 0}
     - target: {fileID: 1359553593977015518, guid: 095b2a03dff3daa4bbe9db651c7cb274, type: 3}
