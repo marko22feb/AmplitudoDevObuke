@@ -15,6 +15,9 @@ public class GameController : MonoBehaviour
     private Text coinsText;
     public Color newTextColor = Color.white;
 
+    public List<ItemData> items;
+    public List<InventoryData> inventoryData;
+
     bool IsNewGame = false;
     string Username = "User";
 
@@ -103,3 +106,5 @@ public class SaveGame
 }
 
 public enum InteractType { none, Door, Lever, Ladders };
+public enum Direction { forward, backward, left, right };
+

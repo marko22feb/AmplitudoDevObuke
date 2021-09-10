@@ -15,7 +15,12 @@ public class CameraFollow : MonoBehaviour
 
     void Update()
     {
-       Vector3 newPosition = Vector3.Lerp(transform.position, playerTransform.position + offset, 0.015f);
-        transform.position = newPosition;
+        float dampTime = 0.15f;
+        Vector3 velocity = Vector3.zero;
+        float followSpeed = Vector2.Distance(transform.position, playerTransform.position) > 5 ? 0.15f : 0.015f;
+        Vector3 newPosition = Vector3.Lerp(transform.position, playerTransform.position + offset, followSpeed);
+        transform.position = 
+
+        Vector3.SmoothDamp(transform.position, playerTransform.position + offset, ref velocity, dampTime);
     }
 }

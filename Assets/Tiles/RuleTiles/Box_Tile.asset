@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9d1514134bc4fbd41bb739b1b9a49231, type: 3}
-  m_Name: Coin_Tile
+  m_Name: Box_Tile
   m_EditorClassIdentifier: 
   m_DefaultSprite: {fileID: 0}
-  m_DefaultGameObject: {fileID: 8949826643460731396, guid: 14d0067ec58e9a947aff57a624e4313a, type: 3}
+  m_DefaultGameObject: {fileID: 185674267858362254, guid: 58f2b57369f7bf141b5cd922d480cd9a, type: 3}
   m_DefaultColliderType: 0
   m_TilingRules: []

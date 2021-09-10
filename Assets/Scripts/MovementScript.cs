@@ -4,14 +4,24 @@ using UnityEngine;
 
 public class MovementScript : MonoBehaviour
 {
-    enum Direction {forward, backward, left, right };
+    [Header("Misc")]
     [SerializeField]
     LayerMask floorLayer = default;
+    [Header ("Movement Control")]
+    [SerializeField]
+    float speed;
+    [SerializeField]
+    float jumpHeight = 30f;
+    [SerializeField]
+    float airControl = 1f;
+    [SerializeField]
+    Vector2 velocityClamp = new Vector2(-8f, 8f);
+
     private Direction prevDashDir = default;
-    public float speed;
     private Animator playerAnimator;
     private Rigidbody2D rigid;
     private BoxCollider2D boxCollider;
+    [HideInInspector]
     public GameController control;
     private float DashDistance = 3f;
     private bool isOnGround = false;
@@ -31,13 +41,6 @@ public class MovementScript : MonoBehaviour
 
     private void Update()
     {
-        float horizontal = rigid.velocity.x;
-        float vertical = rigid.velocity.y;
-        float sprintSpeed = speed;
-
-        bool left = false;
-        bool right = false;
-        bool up = false;
         bool down = false;
 
         CheckForGroundCollision();
@@ -54,47 +57,36 @@ public class MovementScript : MonoBehaviour
             if (Detected) return;
             if (Input.GetKeyUp(KeyCode.D)) DetectDoubleClick(Direction.right, out Detected);
             if (Detected) return;
-            if (Input.GetAxis("Horizontal") < 0) left = true;
-            if (Input.GetAxis("Horizontal") > 0) right = true;
 
-            if (isOnGround)
-            {
-                if (Input.GetKey(KeyCode.W)) up = true;
-                if (Input.GetKey(KeyCode.LeftShift)) sprintSpeed = speed * 2;
-            }
+            Movement(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")); 
         }
 
-        if (!(left && right))
-        {
-           // if (!isOnGround) sprintSpeed = speed * 0.5f;
-            if (left) horizontal = -sprintSpeed * Time.deltaTime;
-            if (right) horizontal = sprintSpeed * Time.deltaTime;
-        }
-
-        if (!(up && down))
-        {
-            if (down) { playerAnimator.SetBool("IsCrouched", true); }
-            if (up)
-            {
-                vertical = rigid.velocity.y + 4f;
-            }
-        }
+        if (down) { playerAnimator.SetBool("IsCrouched", true); }
 
         if (!down) { playerAnimator.SetBool("IsCrouched", false); }
 
-        if (left || right)
-        {
-            if (horizontal < 0) transform.rotation = new Quaternion(0, 180, 0, 0); else transform.rotation = new Quaternion(0, 0, 0, 0);
-        }
-
-        GetComponent<Rigidbody2D>().velocity = new Vector2(horizontal, vertical);
-        playerAnimator.SetFloat("HorizontalVelocity", horizontal);
+        playerAnimator.SetFloat("HorizontalVelocity", rigid.velocity.x);
         playerAnimator.SetFloat("VerticalVelocity", rigid.velocity.y);
     }
 
-    private void FixedUpdate()
+
+    private void Movement(float horizontal, float vertical)
     {
-        
+        if (rigid.velocity.x != 0) if (rigid.velocity.x < 0) transform.rotation = new Quaternion(0, 180, 0, 0); else transform.rotation = new Quaternion(0, 0, 0, 0);
+
+        if (isOnGround)
+        {
+            float sprintSpeed = speed;
+            if (Input.GetKey(KeyCode.LeftShift)) sprintSpeed = speed * 2;
+
+            if (vertical > 0) vertical = jumpHeight; else vertical = rigid.velocity.y;
+
+            rigid.velocity = new Vector2(horizontal * sprintSpeed * Time.deltaTime, vertical);
+        } else
+        {
+            rigid.velocity += new Vector2(horizontal * airControl, 0);
+            rigid.velocity = new Vector2(Mathf.Clamp(rigid.velocity.x, velocityClamp.x, velocityClamp.y), rigid.velocity.y);
+        }
     }
 
     private void DetectDoubleClick (Direction dir, out bool Detected)
@@ -154,7 +146,7 @@ public class MovementScript : MonoBehaviour
 
     IEnumerator ResetDoubleClick()
     {
-        yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(0.2f);
         prevDashDir = Direction.forward;
     }
 }
