@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ItemPickUp : MonoBehaviour
 {
+    enum ItemType { coins, gem}
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Player")
