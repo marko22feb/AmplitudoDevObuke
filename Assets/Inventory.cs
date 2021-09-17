@@ -6,6 +6,7 @@ public class Inventory : MonoBehaviour
 {
     public static Inventory inv;
     public GameObject Slot;
+    public List<InventorySlot> slots = new List<InventorySlot>();
     public int MaxInvSlots;
 
     private void Start()
@@ -16,6 +17,7 @@ public class Inventory : MonoBehaviour
         {
             GameObject temp = Instantiate(Slot, this.transform);
             temp.GetComponent<InventorySlot>().SlotID = i;
+            slots.Add(temp.GetComponent<InventorySlot>());
 
             if (i >= GameController.control.inventoryData.Count)
             {
@@ -51,8 +53,11 @@ public class Inventory : MonoBehaviour
             {
                 ItemData itemToCheck = GetItem(GameController.control.inventoryData[i].ItemID);
                 int FreeSlots = itemToCheck.MaxStack - GameController.control.inventoryData[i].Amount;
-                if (FreeSlots > 0) slotID = i;
-                break;
+                if (FreeSlots > 0)
+                {
+                    slotID = i;
+                    break;
+                }
             }
         }
 
@@ -92,8 +97,8 @@ public class Inventory : MonoBehaviour
 
             if (slotID != -1)
             {
-                ItemData itemToCheck = GetItem(GameController.control.inventoryData[slotID].ItemID);
-                if (data.Amount > itemToCheck.MaxStack)
+                ItemData itemToCheck = GetItem(data.ItemID);
+                if (data.Amount <= itemToCheck.MaxStack)
                 {
                     GameController.control.inventoryData[slotID] = data;
                 } else
@@ -110,28 +115,33 @@ public class Inventory : MonoBehaviour
 
                     AddItem(newInvData);
                 }
-
             }
             else
             {
                 Debug.Log("Inventory Full");
             }
         }
+        ConstructInventory();
+    }
 
-        int childs = GameObject.Find("InventoryItems").transform.GetChildCount();
-        for (int i = 0; i < childs; i++)
+    void ConstructInventory()
+    {
+        int index = 0;
+        foreach (InventorySlot s in slots)
         {
-            GameObject.Find("InventoryItems").transform.GetChild(i).GetComponent<InventorySlot>().invData = GameController.control.inventoryData[i];
-            GameObject.Find("InventoryItems").transform.GetChild(i).GetComponent<InventorySlot>().UpdateVisuals();
-        } 
+            s.invData = GameController.control.inventoryData[index];
+            s.UpdateVisuals();
+            index++;
+        }
     }
 }
 
 [System.Serializable]
-public enum ItemType
+public enum EquipType
 {
     consumable,
-    equipable
+    Rifle,
+    Armor
 }
 
 [System.Serializable]
@@ -140,7 +150,7 @@ public struct ItemData
     public int ItemID;
     public string ItemName;
 
-    public ItemType type;
+    public EquipType equipSlot;
     public int MaxStack;
     public Sprite Icon;
 
@@ -148,7 +158,7 @@ public struct ItemData
     {
         ItemID = -1;
         ItemName = "default";
-        type = ItemType.consumable;
+        equipSlot = EquipType.consumable;
         MaxStack = 1;
         Icon = null;
     }
@@ -164,5 +174,11 @@ public struct InventoryData
     {
         ItemID = -1;
         Amount = 0;
+    }
+
+    public InventoryData(int ID, int amount)
+    {
+        ItemID = ID;
+        Amount = amount;
     }
 }

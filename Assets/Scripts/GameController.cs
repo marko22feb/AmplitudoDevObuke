@@ -10,13 +10,17 @@ using UnityEngine.SceneManagement;
 public class GameController : MonoBehaviour
 {
     public static GameController control;
+
     public GameObject Player;
     public int CoinsCount;
+    public int MaxBeltSlotItems;
+
     private Text coinsText;
     public Color newTextColor = Color.white;
 
     public List<ItemData> items;
     public List<InventoryData> inventoryData;
+    public List<InventoryData> equipData;
 
     bool IsNewGame = false;
     string Username = "User";
@@ -36,6 +40,11 @@ public class GameController : MonoBehaviour
 
         Player = GameObject.Find("Player");
         coinsText = GameObject.Find("CoinsText").GetComponent<Text>();
+
+        for (int i = 0; i < 5; i++)
+        {
+            equipData.Add(new InventoryData(-1, 0));
+        }
 
         bool CanLoad;
         LoadGame(out CanLoad);

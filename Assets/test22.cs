@@ -11,10 +11,10 @@ public class test22 : MonoBehaviour
 
     IEnumerator tempAdd()
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(1);
         InventoryData item = new InventoryData(0);
         item.ItemID = 1;
-        item.Amount = 111;
+        item.Amount = 10;
 
         Inventory.inv.AddItem(item);
     }
