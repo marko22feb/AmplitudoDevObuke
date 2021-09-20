@@ -55,8 +55,11 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
         if (draggedSlot.Equip)
         {
+            
+
             if (Equip)
             {
+                if (draggedSlot.itemData.equipSlot != equipType) return;
                 if (draggedData.ItemID != currentData.ItemID)
                 {
                     invData = draggedData;
@@ -84,6 +87,8 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             }
             else
             {
+                if (currentData.ItemID != -1 && draggedSlot.equipType != itemData.equipSlot) return;
+
                 if (draggedData.ItemID != currentData.ItemID)
                 {
                     if (invData.Amount > maxBeltItems)
@@ -129,6 +134,7 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         {
             if (Equip)
             {
+                if (draggedSlot.itemData.equipSlot != equipType) return;
                 if (invData.ItemID != -1)
                 {
                     if (draggedData.ItemID != invData.ItemID)
@@ -212,8 +218,9 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     private void Start()
     {
-        if (Equip) {
-        invData = GameController.control.equipData[EquipSlotID];
+        if (Equip)
+        {
+            invData = GameController.control.equipData[EquipSlotID];
         }
         UpdateVisuals();
     }

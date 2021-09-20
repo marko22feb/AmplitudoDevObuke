@@ -7,8 +7,7 @@ public class StatComponent : MonoBehaviour
 {
     [SerializeField]
     float MinimumHealth = 0;
-    [SerializeField]
-    float MaximumHealth = 100;
+    public float MaximumHealth = 100;
     public float CurrentHealth = 75;
     public float DamageAmount = 50;
 
@@ -40,9 +39,10 @@ public class StatComponent : MonoBehaviour
         healthText.text = CurrentHealth + " / " + MaximumHealth;
     }
 
-    public void ModifyBy(float amount)
+    public void ModifyBy(Stats stat, float amount)
     {
         CurrentHealth = CurrentHealth + amount;
+        CurrentHealth = Mathf.Clamp(CurrentHealth, MinimumHealth, MaximumHealth);
         UpdateSlider();
     }
 }

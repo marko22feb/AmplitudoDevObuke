@@ -12,7 +12,7 @@ public class DamageComponent : MonoBehaviour
         if (!CanDealDamage) return;
         StatComponent stats = GetComponent<StatComponent>();
         if (stats == null) return;
-        stats.ModifyBy(-collision.GetComponent<StatComponent>().DamageAmount);
+        stats.ModifyBy(Stats.health,-collision.GetComponent<StatComponent>().DamageAmount);
         StartCoroutine(DelayDamage());
         StartCoroutine(iFramesAnim(gameObject));
     }
@@ -23,7 +23,7 @@ public class DamageComponent : MonoBehaviour
         StatComponent stats = collision.gameObject.GetComponent<StatComponent>();
         if(stats != null)
         {
-            stats.ModifyBy(-GetComponent<StatComponent>().DamageAmount);
+            stats.ModifyBy(Stats.health, -GetComponent<StatComponent>().DamageAmount);
             StartCoroutine(DelayDamage());
             StartCoroutine(iFramesAnim(collision.gameObject));
         }

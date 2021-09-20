@@ -7,7 +7,9 @@ public class Inventory : MonoBehaviour
     public static Inventory inv;
     public GameObject Slot;
     public List<InventorySlot> slots = new List<InventorySlot>();
+    public List<InventorySlot> equipSlots = new List<InventorySlot>();
     public int MaxInvSlots;
+
 
     private void Start()
     {
@@ -134,6 +136,17 @@ public class Inventory : MonoBehaviour
             index++;
         }
     }
+
+    public void RefreshEquipableSlots()
+    {
+        int index = 0;
+        foreach (InventorySlot s in equipSlots)
+        {
+            s.invData = GameController.control.equipData[index];
+            s.UpdateVisuals();
+            index++;
+        }
+    }
 }
 
 [System.Serializable]
@@ -141,10 +154,18 @@ public enum EquipType
 {
     consumable,
     Rifle,
+    Sword,
     Armor
 }
 
 [System.Serializable]
+public struct ConsumableData
+{
+    public Stats stat;
+    public float changeBy;
+}
+
+    [System.Serializable]
 public struct ItemData 
 { 
     public int ItemID;
@@ -154,6 +175,8 @@ public struct ItemData
     public int MaxStack;
     public Sprite Icon;
 
+    public ConsumableData consumeData;
+
     public ItemData(int itemID)
     {
         ItemID = -1;
@@ -161,6 +184,7 @@ public struct ItemData
         equipSlot = EquipType.consumable;
         MaxStack = 1;
         Icon = null;
+        consumeData = new ConsumableData();
     }
 }
 
