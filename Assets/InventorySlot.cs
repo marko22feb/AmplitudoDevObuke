@@ -135,6 +135,15 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             if (Equip)
             {
                 if (draggedSlot.itemData.equipSlot != equipType) return;
+
+                if (draggedSlot.itemData.equipSlot == EquipType.Sword)
+                {
+                    if (GameController.control.Player.transform.GetChild(0).childCount > 0)
+                        Destroy(GameController.control.Player.transform.GetChild(0).GetChild(0));
+
+                    GameObject temp = Instantiate(draggedSlot.itemData.weaponPrefab, GameController.control.Player.transform.GetChild(0));
+                }
+
                 if (invData.ItemID != -1)
                 {
                     if (draggedData.ItemID != invData.ItemID)

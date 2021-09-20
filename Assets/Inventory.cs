@@ -176,6 +176,7 @@ public struct ItemData
     public Sprite Icon;
 
     public ConsumableData consumeData;
+    public GameObject weaponPrefab;
 
     public ItemData(int itemID)
     {
@@ -185,6 +186,7 @@ public struct ItemData
         MaxStack = 1;
         Icon = null;
         consumeData = new ConsumableData();
+        weaponPrefab = null;
     }
 }
 

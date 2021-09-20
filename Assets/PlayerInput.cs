@@ -8,6 +8,7 @@ public class PlayerInput : MonoBehaviour
     public GameObject InteractCanvasPrefab;
     private GameObject spawnedCanvas;
     private Animator InventoryAC;
+    public Animator WeaponSlotAC;
     private bool InventoryAnimation = false;
     private StatComponent statComp;
 
@@ -57,7 +58,10 @@ public class PlayerInput : MonoBehaviour
 
         if (Input.GetButtonDown("Melee"))
         {
-           
+            if (WeaponSlotAC.transform.childCount > 0)
+            {
+                WeaponSlotAC.SetTrigger("Attack");
+            }
         }
 
         if (Input.GetButtonDown("Shoot"))
