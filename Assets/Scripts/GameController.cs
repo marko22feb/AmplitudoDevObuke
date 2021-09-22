@@ -117,4 +117,7 @@ public class SaveGame
 public enum Stats { health, stamina, mana};
 public enum InteractType { none, Door, Lever, Ladders };
 public enum Direction { forward, backward, left, right };
+public enum EnemyType { ground, jumping, flying };
+public enum PatrolType { looping, backAndForth, single };
+public enum MovementType { patrol, freestyle };
 

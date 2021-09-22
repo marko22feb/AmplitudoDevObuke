@@ -24,7 +24,7 @@ public class StatComponent : MonoBehaviour
         } else
         {
             CurrentHealth = MaximumHealth;
-            healthSlider = transform.Find("EnemyCanvas").transform.Find("HealthSlider").GetComponent<Slider>();
+            healthSlider = transform.parent.Find("EnemyCanvas").transform.Find("HealthSlider").GetComponent<Slider>();
         }
 
         healthText = healthSlider.transform.Find("HealthText").GetComponent<Text>();
