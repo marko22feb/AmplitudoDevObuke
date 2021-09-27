@@ -22,7 +22,7 @@ public class GameController : MonoBehaviour
     public List<InventoryData> inventoryData;
     public List<InventoryData> equipData;
 
-    bool IsNewGame = false;
+   // bool IsNewGame = false;
     string Username = "User";
 
     public void Awake()
