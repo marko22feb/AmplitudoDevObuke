@@ -70,7 +70,7 @@ public class MovementScript : MonoBehaviour
     }
 
 
-    private void Movement(float horizontal, float vertical)
+    public void Movement(float horizontal, float vertical)
     {
         if (rigid.velocity.x != 0) if (rigid.velocity.x < 0) transform.rotation = new Quaternion(0, 180, 0, 0); else transform.rotation = new Quaternion(0, 0, 0, 0);
 

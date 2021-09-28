@@ -15,6 +15,8 @@ public class GameController : MonoBehaviour
     public int CoinsCount;
     public int MaxBeltSlotItems;
 
+    public float OptimizationDistance = 25f;
+
     private Text coinsText;
     public Color newTextColor = Color.white;
 

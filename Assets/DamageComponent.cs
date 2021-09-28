@@ -6,13 +6,15 @@ public class DamageComponent : MonoBehaviour
 {
     private bool CanDealDamage = true;
     private float iFrames = 2f;
+    public bool isTrap = false;
+    public float DamageByTrap = 20f;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!CanDealDamage) return;
         StatComponent stats = GetComponent<StatComponent>();
         if (stats == null) return;
-        stats.ModifyBy(Stats.health,-collision.GetComponent<StatComponent>().DamageAmount);
+        stats.ModifyBy(Stats.health, isTrap? -DamageByTrap : -collision.GetComponent<StatComponent>().DamageAmount);
         StartCoroutine(DelayDamage());
         StartCoroutine(iFramesAnim(gameObject));
     }
@@ -23,7 +25,7 @@ public class DamageComponent : MonoBehaviour
         StatComponent stats = collision.gameObject.GetComponent<StatComponent>();
         if(stats != null)
         {
-            stats.ModifyBy(Stats.health, -GetComponent<StatComponent>().DamageAmount);
+            stats.ModifyBy(Stats.health, isTrap ? -DamageByTrap : -GetComponent<StatComponent>().DamageAmount);
             StartCoroutine(DelayDamage());
             StartCoroutine(iFramesAnim(collision.gameObject));
         }

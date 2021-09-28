@@ -220,7 +220,7 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.18, y: -0.21}
+  m_Offset: {x: -0.18, y: -0.33}
   m_Size: {x: 1.75, y: 1}
   m_Direction: 1
 --- !u!114 &4090408062482943453
@@ -253,13 +253,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyType: 0
-  movementType: 1
-  patrolType: 0
+  movementType: 0
+  patrolType: 1
   raytraceStart: {fileID: 2286589505204717350}
   layer:
     serializedVersion: 2
     m_Bits: 512
-  speed: 100
+  speed: 250
+  AcceptablePatrolRadius: 1
+  patrolRoute: {fileID: 0}
 --- !u!1 &4121561226960131270
 GameObject:
   m_ObjectHideFlags: 0
@@ -299,6 +301,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7227910678341614884}
+  - component: {fileID: 82065012}
+  - component: {fileID: 82065014}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -322,6 +326,44 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &82065012
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6542960503973609776}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 4
+--- !u!114 &82065014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6542960503973609776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da6df6267f4ebb24fadf900ce0f65319, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OptimizeTime: 0.2
+  animators: []
+  rigidbodies: []
+  scripts:
+  - {fileID: 3652195683160455291}
 --- !u!1001 &4090408062333748833
 PrefabInstance:
   m_ObjectHideFlags: 0
