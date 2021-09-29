@@ -12,6 +12,7 @@ public class Android_MovementButton : MonoBehaviour, IPointerUpHandler, IPointer
     private void Start()
     {
         movement = GameController.control.Player.GetComponent<MovementScript>();
+        if (Application.platform == RuntimePlatform.Android || movement.TestingAndroid) gameObject.SetActive(true); else gameObject.SetActive(false);
     }
 
     public void OnPointerUp(PointerEventData eventData)

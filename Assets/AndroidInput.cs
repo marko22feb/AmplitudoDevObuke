@@ -10,10 +10,14 @@ public class AndroidInput : MonoBehaviour, IPointerClickHandler
     public InputType inputType;
     private PlayerInput playerInput;
 
+    private void Start()
+    {
+        playerInput = GameController.control.Player.GetComponent<PlayerInput>();
+        if (Application.platform == RuntimePlatform.Android || playerInput.TestingAndroid) gameObject.SetActive(true); else gameObject.SetActive(false);
+    }
+
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (playerInput == null) playerInput = GameController.control.Player.GetComponent<PlayerInput>();
-
         switch (inputType)
         {
             case InputType.shoot:

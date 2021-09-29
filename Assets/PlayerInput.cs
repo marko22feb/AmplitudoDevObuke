@@ -11,7 +11,7 @@ public class PlayerInput : MonoBehaviour
     public Animator WeaponSlotAC;
     private bool InventoryAnimation = false;
     private StatComponent statComp;
-    bool TestingAndroid = false;
+    public bool TestingAndroid = false;
 
     public void ActivateInteract(InteractableObject ob)
     {
