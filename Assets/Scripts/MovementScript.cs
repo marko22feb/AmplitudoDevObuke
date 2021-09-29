@@ -17,12 +17,16 @@ public class MovementScript : MonoBehaviour
     [SerializeField]
     Vector2 velocityClamp = new Vector2(-8f, 8f);
 
+    Dictionary<Direction, float> AndroidMovement = new Dictionary<Direction, float>();
+
     private Direction prevDashDir = default;
     private Animator playerAnimator;
-    private Rigidbody2D rigid;
+    [HideInInspector]
+    public Rigidbody2D rigid;
     private BoxCollider2D boxCollider;
     [HideInInspector]
     public GameController control;
+    public bool TestingAndroid = false;
     private float DashDistance = 3f;
     private bool isOnGround = false;
 
@@ -37,38 +41,45 @@ public class MovementScript : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
         control = GameObject.Find("GameController").GetComponent<GameController>();
         boxCollider = GetComponent<BoxCollider2D>();
+
+        AndroidMovement.Add(Direction.forward, 0);
+        AndroidMovement.Add(Direction.backward, 0);
+        AndroidMovement.Add(Direction.left, 0);
+        AndroidMovement.Add(Direction.right, 0);
     }
 
     private void Update()
     {
-        bool down = false;
-
         CheckForGroundCollision();
-
-        if (isOnGround)
+        if (Application.platform != RuntimePlatform.Android && !TestingAndroid)
         {
-            if (Input.GetKey(KeyCode.S)) down = true;
-        }
+            bool down = false;
+            if (isOnGround)
+            {
+                if (Input.GetKey(KeyCode.S)) down = true;
+            }
 
-        if (!down)
+            if (!down)
+            {
+                bool Detected = false;
+                if (Input.GetKeyUp(KeyCode.A)) DetectDoubleClick(Direction.left, out Detected);
+                if (Detected) return;
+                if (Input.GetKeyUp(KeyCode.D)) DetectDoubleClick(Direction.right, out Detected);
+                if (Detected) return;
+
+                Movement(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+            }
+
+            SetCrouched(down);
+        }
+        else
         {
-            bool Detected = false;
-            if (Input.GetKeyUp(KeyCode.A)) DetectDoubleClick(Direction.left, out Detected);
-            if (Detected) return;
-            if (Input.GetKeyUp(KeyCode.D)) DetectDoubleClick(Direction.right, out Detected);
-            if (Detected) return;
-
-            Movement(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")); 
+            Movement(AndroidMovement[Direction.left] + AndroidMovement[Direction.right], AndroidMovement[Direction.forward] + AndroidMovement[Direction.backward]);
         }
-
-        if (down) { playerAnimator.SetBool("IsCrouched", true); }
-
-        if (!down) { playerAnimator.SetBool("IsCrouched", false); }
 
         playerAnimator.SetFloat("HorizontalVelocity", rigid.velocity.x);
         playerAnimator.SetFloat("VerticalVelocity", rigid.velocity.y);
     }
-
 
     public void Movement(float horizontal, float vertical)
     {
@@ -89,6 +100,15 @@ public class MovementScript : MonoBehaviour
         }
     }
 
+    public void SetCrouched (bool crouch)
+    {
+        playerAnimator.SetBool("IsCrouched", crouch);
+    }
+
+    public void SetAndroidMovement(Direction direction, float value)
+    {
+        AndroidMovement[direction] = value;
+    }
     private void DetectDoubleClick (Direction dir, out bool Detected)
     {
         float distance = 0;

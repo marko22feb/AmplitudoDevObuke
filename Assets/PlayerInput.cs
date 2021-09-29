@@ -11,6 +11,7 @@ public class PlayerInput : MonoBehaviour
     public Animator WeaponSlotAC;
     private bool InventoryAnimation = false;
     private StatComponent statComp;
+    bool TestingAndroid = false;
 
     public void ActivateInteract(InteractableObject ob)
     {
@@ -25,48 +26,42 @@ public class PlayerInput : MonoBehaviour
     {
         InventoryAC = GameObject.Find("InventoryPanel").GetComponent<Animator>();
         statComp = GetComponent<StatComponent>();
+        TestingAndroid = GetComponent<MovementScript>().TestingAndroid;
     }
 
     private void Update()
     {
-        if (Input.GetButtonDown("Interact"))
+        if (Application.platform != RuntimePlatform.Android && !TestingAndroid)
         {
-            if (objectToInteractWith != null)
+            if (Input.GetButtonDown("Interact"))
             {
-                objectToInteractWith.OnInteract();
+                Interact();
             }
-        }
 
-        if (Input.GetButtonDown("Inventory"))
-        {
-            if (!InventoryAnimation)
+            if (Input.GetButtonDown("Inventory"))
             {
-                InventoryAC.SetTrigger("ClickedInventory");
-                InventoryAnimation = true;
+                ClickedInventory();
             }
-        }
 
-        if (Input.GetButtonDown("Consumable Left"))
-        {
-            UseConsumable(0);
-        }
-
-        if (Input.GetButtonDown("Consumable Right"))
-        {
-            UseConsumable(1);
-        }
-
-        if (Input.GetButtonDown("Melee"))
-        {
-            if (WeaponSlotAC.transform.childCount > 0)
+            if (Input.GetButtonDown("Consumable Left"))
             {
-                WeaponSlotAC.SetTrigger("Attack");
+                UseConsumable(0);
             }
-        }
 
-        if (Input.GetButtonDown("Shoot"))
-        {
-            
+            if (Input.GetButtonDown("Consumable Right"))
+            {
+                UseConsumable(1);
+            }
+
+            if (Input.GetButtonDown("Melee"))
+            {
+                Melee();
+            }
+
+            if (Input.GetButtonDown("Shoot"))
+            {
+
+            }
         }
     }
 
@@ -83,6 +78,31 @@ public class PlayerInput : MonoBehaviour
             if (slotData.Amount < 1) slotData = new InventoryData(-1);
             GameController.control.equipData[slot] = slotData;
             Inventory.inv.RefreshEquipableSlots();
+        }
+    }
+
+    public void Interact()
+    {
+        if (objectToInteractWith != null)
+        {
+            objectToInteractWith.OnInteract();
+        }
+    }
+
+    public void ClickedInventory()
+    {
+        if (!InventoryAnimation)
+        {
+            InventoryAC.SetTrigger("ClickedInventory");
+            InventoryAnimation = true;
+        }
+    }
+
+    public void Melee()
+    {
+        if (WeaponSlotAC.transform.childCount > 0)
+        {
+            WeaponSlotAC.SetTrigger("Attack");
         }
     }
 
