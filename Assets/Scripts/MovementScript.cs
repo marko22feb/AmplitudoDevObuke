@@ -32,6 +32,7 @@ public class MovementScript : MonoBehaviour
 
     private void Start()
     {
+
         Application.targetFrameRate = 100;
     }
 
@@ -51,30 +52,33 @@ public class MovementScript : MonoBehaviour
     private void Update()
     {
         CheckForGroundCollision();
-        if (Application.platform != RuntimePlatform.Android && !TestingAndroid)
+        if (GameController.control.IsInputEnabled)
         {
-            bool down = false;
-            if (isOnGround)
+            if (Application.platform != RuntimePlatform.Android && !TestingAndroid)
             {
-                if (Input.GetKey(KeyCode.S)) down = true;
-            }
+                bool down = false;
+                if (isOnGround)
+                {
+                    if (Input.GetKey(KeyCode.S)) down = true;
+                }
 
-            if (!down)
+                if (!down)
+                {
+                    bool Detected = false;
+                    if (Input.GetKeyUp(KeyCode.A)) DetectDoubleClick(Direction.left, out Detected);
+                    if (Detected) return;
+                    if (Input.GetKeyUp(KeyCode.D)) DetectDoubleClick(Direction.right, out Detected);
+                    if (Detected) return;
+
+                    Movement(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+                }
+
+                SetCrouched(down);
+            }
+            else
             {
-                bool Detected = false;
-                if (Input.GetKeyUp(KeyCode.A)) DetectDoubleClick(Direction.left, out Detected);
-                if (Detected) return;
-                if (Input.GetKeyUp(KeyCode.D)) DetectDoubleClick(Direction.right, out Detected);
-                if (Detected) return;
-
-                Movement(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+                Movement(AndroidMovement[Direction.left] + AndroidMovement[Direction.right], AndroidMovement[Direction.forward] + AndroidMovement[Direction.backward]);
             }
-
-            SetCrouched(down);
-        }
-        else
-        {
-            Movement(AndroidMovement[Direction.left] + AndroidMovement[Direction.right], AndroidMovement[Direction.forward] + AndroidMovement[Direction.backward]);
         }
 
         playerAnimator.SetFloat("HorizontalVelocity", rigid.velocity.x);

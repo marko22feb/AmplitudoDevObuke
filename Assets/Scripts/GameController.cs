@@ -15,6 +15,9 @@ public class GameController : MonoBehaviour
     public int CoinsCount;
     public int MaxBeltSlotItems;
 
+    public List<AudioClip> backgroundmusic = new List<AudioClip>();
+    private AudioSource audioSource;
+
     public float OptimizationDistance = 25f;
 
     private Text coinsText;
@@ -24,8 +27,17 @@ public class GameController : MonoBehaviour
     public List<InventoryData> inventoryData;
     public List<InventoryData> equipData;
 
-   // bool IsNewGame = false;
-    string Username = "User";
+    [HideInInspector]
+    public bool IsNewGame = false;
+    public bool IsMainMenu = false;
+    public string Username = "User";
+    [HideInInspector]
+    public bool IsInputEnabled = true;
+
+    [SerializeField]
+    private GameObject settingsPrefab;
+    [HideInInspector]
+    public GameObject settingsCanvas;
 
     public void Awake()
     {
@@ -40,28 +52,54 @@ public class GameController : MonoBehaviour
             return;
         }
 
-        Player = GameObject.Find("Player");
-        coinsText = GameObject.Find("CoinsText").GetComponent<Text>();
-
         for (int i = 0; i < 5; i++)
         {
             equipData.Add(new InventoryData(-1, 0));
         }
 
-        bool CanLoad;
-        LoadGame(out CanLoad);
-
-        UpdateCoinText();
         SceneManager.activeSceneChanged += OnNewLevel;
+    }
+
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+        PlayBackgroundMusic();
+    }
+
+    private IEnumerator PlayNextBackgroundMusic(float Duration)
+    {
+        yield return new WaitForSeconds(Duration);
+        PlayBackgroundMusic();
+    }
+
+    void PlayBackgroundMusic()
+    {
+        int random = UnityEngine.Random.Range(0, backgroundmusic.Count);
+        audioSource.clip = backgroundmusic[random];
+        audioSource.Play();
+        float lenght = backgroundmusic[random].length;
+        StartCoroutine(PlayNextBackgroundMusic(lenght));
     }
 
     private void OnNewLevel(Scene c, Scene b)
     {
-        if (control == this)
+        if (!IsMainMenu)
         {
-            Player = GameObject.Find("Player");
-            coinsText = GameObject.Find("CoinsText").GetComponent<Text>();
-            UpdateCoinText();
+            if (control == this)
+            {
+                settingsCanvas = GameObject.Find("SettingsCanvas");
+                if (settingsCanvas == null) settingsCanvas = Instantiate(settingsPrefab);
+
+                if (!IsNewGame)
+                {
+                    bool CanLoad;
+                    LoadGame(out CanLoad);
+                }
+
+                Player = GameObject.Find("Player");
+                coinsText = GameObject.Find("CoinsText").GetComponent<Text>();
+                UpdateCoinText();
+            }
         }
     }
 
@@ -106,6 +144,37 @@ public class GameController : MonoBehaviour
         } 
         else Success = false;
     }
+
+    public int GetLastPlayedScene()
+    {
+        int scene = 0;
+
+        if (File.Exists(Application.persistentDataPath + Username + ".123"))
+        {
+            BinaryFormatter binaryFormatter = new BinaryFormatter();
+            FileStream file = File.Open(Application.persistentDataPath + Username + ".123", FileMode.Open);
+            SaveGame save = (SaveGame)binaryFormatter.Deserialize(file);
+
+            scene = save.LastPlayedScene;
+
+            file.Close();
+
+        }
+
+        return scene;
+    }
+
+    public void SaveItemsData()
+    {
+        BinaryFormatter binaryFormatter = new BinaryFormatter();
+        FileStream file = File.Create(Application.persistentDataPath + "items.123");
+        SaveItems save = new SaveItems();
+
+        save.itemdata = items;
+
+        binaryFormatter.Serialize(file, save);
+        file.Close();
+    }
 }
 
 [Serializable]
@@ -116,10 +185,23 @@ public class SaveGame
     public float PlayerHealth;
 }
 
+[Serializable]
+public class SaveItems
+{
+    public List<ItemData> itemdata;
+
+    public SaveItems()
+    {
+    }
+}
+
 public enum Stats { health, stamina, mana};
 public enum InteractType { none, Door, Lever, Ladders };
 public enum Direction { forward, backward, left, right };
 public enum EnemyType { ground, jumping, flying };
 public enum PatrolType { looping, backAndForth, single };
 public enum MovementType { patrol, freestyle };
+
+[Serializable]
+public enum MainMenuButtonType { Continue, newgame, multiplayer, settings, exit };
 
