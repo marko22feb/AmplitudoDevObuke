@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerInput : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class PlayerInput : MonoBehaviour
     private bool InventoryAnimation = false;
     private StatComponent statComp;
     public bool TestingAndroid = false;
+
+    private InputActions keybindings;
 
     public void ActivateInteract(InteractableObject ob)
     {
@@ -27,6 +30,17 @@ public class PlayerInput : MonoBehaviour
         InventoryAC = GameObject.Find("InventoryPanel").GetComponent<Animator>();
         statComp = GetComponent<StatComponent>();
         TestingAndroid = GetComponent<MovementScript>().TestingAndroid;
+    }
+
+    private void Start()
+    {
+        keybindings = InputController.inputs.keybindings;
+        keybindings.Actions.Debug.started += OnDebug;
+    }
+
+    private void OnDebug(InputAction.CallbackContext obj)
+    {
+        Debug.Log("Pressed Keybind");
     }
 
     private void Update()
