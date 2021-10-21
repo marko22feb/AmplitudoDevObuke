@@ -15,6 +15,7 @@ public class StatComponent : MonoBehaviour
     Text healthText;
     [SerializeField]
     bool isPlayer;
+    AIBehavior behavior;
 
     private void Awake()
     {
@@ -23,6 +24,7 @@ public class StatComponent : MonoBehaviour
             healthSlider = GameObject.Find("PlayerHealthSlider").GetComponent<Slider>();
         } else
         {
+            behavior = GetComponent<AIBehavior>();
             CurrentHealth = MaximumHealth;
             healthSlider = transform.parent.Find("EnemyCanvas").transform.Find("HealthSlider").GetComponent<Slider>();
         }
@@ -43,6 +45,25 @@ public class StatComponent : MonoBehaviour
     {
         CurrentHealth = CurrentHealth + amount;
         CurrentHealth = Mathf.Clamp(CurrentHealth, MinimumHealth, MaximumHealth);
+
+        if (!isPlayer)
+        {
+            switch (stat)
+            {
+                case Stats.health:
+                    behavior.OnHealthTrigger(CurrentHealth / MaximumHealth);
+                    break;
+                case Stats.stamina:
+                    behavior.OnStaminaTrigger(1f);
+                    break;
+                case Stats.mana:
+                    behavior.OnManaTrigger(1f);
+                    break;
+                default:
+                    break;
+            }
+        }
+
         UpdateSlider();
     }
 }

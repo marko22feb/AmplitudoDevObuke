@@ -41,7 +41,7 @@ public class Optimize : MonoBehaviour
                 }
             }
         }
-        StartCoroutine(OptimizationBasedOnDistance());
+       // StartCoroutine(OptimizationBasedOnDistance());
     }
 
     IEnumerator OptimizationBasedOnDistance()

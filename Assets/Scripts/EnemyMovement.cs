@@ -10,6 +10,7 @@ public class EnemyMovement : MonoBehaviour
     public Transform raytraceStart;
     public LayerMask layer;
 
+    private bool MovementInterrupted;
     public float speed;
 
     private Direction movementDir = Direction.left;
@@ -20,12 +21,14 @@ public class EnemyMovement : MonoBehaviour
     private int CurrentPatrolPoint;
     private int patrolPointCount;
     private bool reachedEndOfPatrol = false;
+    private AIBehavior behavior;
     public Transform patrolRoute;
     
 
     void Awake()
     {
         rigid = transform.parent.GetComponent<Rigidbody2D>();
+        behavior = GetComponent<AIBehavior>();
     }
 
     private void Start()
@@ -44,6 +47,20 @@ public class EnemyMovement : MonoBehaviour
 
     private void Movement()
     {
+        if (behavior.currentBehaviorType != BehaviorType.idle || behavior.currentState == NPCState.stunned)
+        {
+            MovementInterrupted = true;
+            return;
+        }
+
+        if (MovementInterrupted)
+        {
+            if (movementDir == Direction.left && transform.rotation.y != 0) ChangeDirection(Direction.right);
+            if (movementDir == Direction.right && transform.rotation.y != 180) ChangeDirection(Direction.left);
+            MovementInterrupted = false;
+        }
+
+        Debug.Log("Patroling");
         switch (movementType)
         {
             case MovementType.patrol:

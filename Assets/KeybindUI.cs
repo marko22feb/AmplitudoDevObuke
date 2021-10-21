@@ -28,7 +28,7 @@ public class KeybindUI : MonoBehaviour
         UpdateUI();
     }
 
-    private void Start()
+    private void OnEnable()
     {
         UpdateAction();
         StartCoroutine(delayedCheck());

@@ -163,7 +163,7 @@ public class MovementScript : MonoBehaviour
 
     private void CheckForGroundCollision()
     {
-        RaycastHit2D hit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0, Vector2.down, 0.2f, floorLayer);
+        RaycastHit2D hit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0, Vector2.down, .3f, floorLayer);
         if (hit.collider != null) isOnGround = true; else isOnGround = false;
         playerAnimator.SetBool("IsOnGround", isOnGround);
     }

@@ -204,4 +204,39 @@ public enum MovementType { patrol, freestyle };
 
 [Serializable]
 public enum MainMenuButtonType { Continue, newgame, multiplayer, settings, exit };
+[Serializable]
+public enum BehaviorType { idle, attackMelee, attackRanged, ability};
+[Serializable]
+public enum NPCState { regular, attacking, stunned, scriptedAbility};
+[Serializable]
+public enum ArithmeticOperation { lessThen, lessOrEqual, equal, greaterThen, greaterOrEqual};
+[Serializable]
+public enum AIActionToTake { usePotion, useAbility, changeBehavior}
 
+[Serializable]
+public struct OnStatTrigger
+{
+    public ArithmeticOperation operation;
+    public float Percent;
+    public AIActionToTake action;
+
+    public BehaviorType behaviorToChangeTo;
+}
+
+[Serializable]
+public struct OnSightChange
+{
+    public List<string> Tags;
+    public BehaviorType ChangeBehaviorTo;
+}
+
+[Serializable]
+public struct BehaviorConfig
+{
+    public OnSightChange OnSight;
+    public OnSightChange OnLoseSight;
+
+    public List<OnStatTrigger> healthTriggers;
+    public List<OnStatTrigger> manaTriggers;
+    public List<OnStatTrigger> staminaTriggers;
+}

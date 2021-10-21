@@ -132,7 +132,6 @@ public class InputController : MonoBehaviour
                 InputAction actionToRebind = keybindings.asset.FindAction(keybindings.Actions.Get().bindings[i].action.ToString());
                 actionToRebind.ApplyBindingOverride(save.savedPaths[i]);
             }
-
              file.Close();
         }
     }
