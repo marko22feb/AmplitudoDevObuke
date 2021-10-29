@@ -69,6 +69,9 @@ MonoBehaviour:
     consumeData:
       stat: 0
       changeBy: 50
+    weaponData:
+      bullet: 0
+      rateOfFire: 0
     weaponPrefab: {fileID: 0}
   - ItemID: 1
     ItemName: Mana Potion
@@ -78,15 +81,21 @@ MonoBehaviour:
     consumeData:
       stat: 2
       changeBy: 50
+    weaponData:
+      bullet: 0
+      rateOfFire: 0
     weaponPrefab: {fileID: 0}
   - ItemID: 2
     ItemName: Rifle
     equipSlot: 1
     MaxStack: 1
-    Icon: {fileID: 21300000, guid: 550068d7694d045a59b27f85eae8ea18, type: 3}
+    Icon: {fileID: -4855807490512174151, guid: b071b51d5d9e27945835b2fc1e40fc49, type: 3}
     consumeData:
       stat: 0
       changeBy: 0
+    weaponData:
+      bullet: 0
+      rateOfFire: 0.2
     weaponPrefab: {fileID: 0}
   - ItemID: 3
     ItemName: Sword
@@ -96,6 +105,9 @@ MonoBehaviour:
     consumeData:
       stat: 0
       changeBy: 0
+    weaponData:
+      bullet: 0
+      rateOfFire: 0
     weaponPrefab: {fileID: 7105449390225745672, guid: e5ca8c4d83a06c94a8017a31d1782627, type: 3}
   - ItemID: 4
     ItemName: Armor
@@ -105,6 +117,9 @@ MonoBehaviour:
     consumeData:
       stat: 0
       changeBy: 0
+    weaponData:
+      bullet: 0
+      rateOfFire: 0
     weaponPrefab: {fileID: 0}
   - ItemID: 5
     ItemName: Dagger
@@ -114,7 +129,58 @@ MonoBehaviour:
     consumeData:
       stat: 0
       changeBy: 0
+    weaponData:
+      bullet: 0
+      rateOfFire: 0
     weaponPrefab: {fileID: 7105449390225745672, guid: 6dbd83de839623c408ac397377453e37, type: 3}
+  - ItemID: 6
+    ItemName: Rifle Multi
+    equipSlot: 1
+    MaxStack: 1
+    Icon: {fileID: -3695664891932108249, guid: b071b51d5d9e27945835b2fc1e40fc49, type: 3}
+    consumeData:
+      stat: 0
+      changeBy: 0
+    weaponData:
+      bullet: 1
+      rateOfFire: 0.3
+    weaponPrefab: {fileID: 0}
+  - ItemID: 7
+    ItemName: Rifle Wave
+    equipSlot: 1
+    MaxStack: 1
+    Icon: {fileID: -3695664891932108249, guid: b071b51d5d9e27945835b2fc1e40fc49, type: 3}
+    consumeData:
+      stat: 0
+      changeBy: 0
+    weaponData:
+      bullet: 3
+      rateOfFire: 6
+    weaponPrefab: {fileID: 0}
+  - ItemID: 8
+    ItemName: Rifle Wave Randomized
+    equipSlot: 1
+    MaxStack: 1
+    Icon: {fileID: -3695664891932108249, guid: b071b51d5d9e27945835b2fc1e40fc49, type: 3}
+    consumeData:
+      stat: 0
+      changeBy: 0
+    weaponData:
+      bullet: 4
+      rateOfFire: 11
+    weaponPrefab: {fileID: 0}
+  - ItemID: 9
+    ItemName: Rifle Rain
+    equipSlot: 1
+    MaxStack: 2
+    Icon: {fileID: -3695664891932108249, guid: b071b51d5d9e27945835b2fc1e40fc49, type: 3}
+    consumeData:
+      stat: 0
+      changeBy: 0
+    weaponData:
+      bullet: 2
+      rateOfFire: 2
+    weaponPrefab: {fileID: 0}
   inventoryData:
   - ItemID: 2
     Amount: 1
@@ -124,13 +190,13 @@ MonoBehaviour:
     Amount: 6
   - ItemID: 0
     Amount: 7
-  - ItemID: 0
+  - ItemID: 6
     Amount: 1
-  - ItemID: 0
+  - ItemID: 7
     Amount: 1
-  - ItemID: 0
+  - ItemID: 9
     Amount: 1
-  - ItemID: 0
+  - ItemID: 8
     Amount: 1
   - ItemID: 0
     Amount: 1
@@ -144,7 +210,7 @@ MonoBehaviour:
     Amount: 1
   equipData: []
   IsNewGame: 0
-  IsMainMenu: 1
+  IsMainMenu: 0
   Username: User
   IsInputEnabled: 1
   settingsPrefab: {fileID: 2137528079350715729, guid: 70b9d16d7e443474f8d4b95ae37240ea, type: 3}

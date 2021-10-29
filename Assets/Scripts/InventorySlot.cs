@@ -89,6 +89,12 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             {
                 if (currentData.ItemID != -1 && draggedSlot.equipType != itemData.equipSlot) return;
 
+                if (draggedSlot.itemData.equipSlot == EquipType.Rifle)
+                {
+                    GameController.control.Player.GetComponent<PlayerInput>().equipedAbility = Abilities.NULL;
+                    GameController.control.Player.GetComponent<PlayerInput>().abilityRateOfFire = 0f;
+                }
+
                 if (draggedData.ItemID != currentData.ItemID)
                 {
                     if (invData.Amount > maxBeltItems)
@@ -144,7 +150,13 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
                     GameObject temp = Instantiate(draggedSlot.itemData.weaponPrefab, GameController.control.Player.transform.GetChild(0));
                 }
 
-                if (invData.ItemID != -1)
+                if (draggedSlot.itemData.equipSlot == EquipType.Rifle)
+                {
+                    GameController.control.Player.GetComponent<PlayerInput>().equipedAbility = draggedSlot.itemData.weaponData.bullet;
+                    GameController.control.Player.GetComponent<PlayerInput>().abilityRateOfFire = draggedSlot.itemData.weaponData.rateOfFire;
+                }
+
+                    if (invData.ItemID != -1)
                 {
                     if (draggedData.ItemID != invData.ItemID)
                     {
@@ -216,6 +228,11 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
         draggedSlot.UpdateVisuals();
         UpdateVisuals();
+    }
+
+    void OnEquipItem (EquipType type)
+    {
+
     }
 
     void IEndDragHandler.OnEndDrag(PointerEventData eventData)

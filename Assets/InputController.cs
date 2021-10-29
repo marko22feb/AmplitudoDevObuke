@@ -120,6 +120,7 @@ public class InputController : MonoBehaviour
 
     private void LoadKeybinds()
     {
+       
         if (File.Exists(Application.persistentDataPath + "Keybinds.123"))
         {
 
@@ -132,7 +133,8 @@ public class InputController : MonoBehaviour
                 InputAction actionToRebind = keybindings.asset.FindAction(keybindings.Actions.Get().bindings[i].action.ToString());
                 actionToRebind.ApplyBindingOverride(save.savedPaths[i]);
             }
-             file.Close();
+            
+            file.Close();
         }
     }
 }

@@ -140,7 +140,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 581277339573779552, guid: 2b0e0ef4763ce0b48bc992c983a8a1ec, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.49
+      value: 1.9
       objectReference: {fileID: 0}
     - target: {fileID: 581277339573779552, guid: 2b0e0ef4763ce0b48bc992c983a8a1ec, type: 3}
       propertyPath: m_LocalPosition.z
@@ -172,10 +172,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 581277339573779552, guid: 2b0e0ef4763ce0b48bc992c983a8a1ec, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 581277339573779554, guid: 2b0e0ef4763ce0b48bc992c983a8a1ec, type: 3}
-      propertyPath: TestingAndroid
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 581277339573779557, guid: 2b0e0ef4763ce0b48bc992c983a8a1ec, type: 3}
@@ -4868,6 +4864,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2504309626304095901, guid: 95c5e79c72f404142b0bede6532d9889, type: 3}
+      propertyPath: orthographic size
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 2504309626304095903, guid: 95c5e79c72f404142b0bede6532d9889, type: 3}
       propertyPath: m_Name
       value: Main Camera
@@ -4900,10 +4900,6 @@ PrefabInstance:
     - target: {fileID: 976028755564733627, guid: 095b2a03dff3daa4bbe9db651c7cb274, type: 3}
       propertyPath: m_Name
       value: GameController
-      objectReference: {fileID: 0}
-    - target: {fileID: 1127799529687803777, guid: 095b2a03dff3daa4bbe9db651c7cb274, type: 3}
-      propertyPath: IsMainMenu
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1359553593977015518, guid: 095b2a03dff3daa4bbe9db651c7cb274, type: 3}
       propertyPath: m_RootOrder
@@ -5590,6 +5586,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Lever
       objectReference: {fileID: 0}
+    - target: {fileID: 4250252319149109357, guid: f8e18a4408cf7a24f992d568871cee16, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 7272050867107499603, guid: f8e18a4408cf7a24f992d568871cee16, type: 3}
       propertyPath: m_RootOrder
       value: 10
@@ -5741,6 +5741,7 @@ GameObject:
   - component: {fileID: 9201301145353575718}
   - component: {fileID: 8492291699379218560}
   - component: {fileID: 9201301145353575720}
+  - component: {fileID: 9201301145353575721}
   m_Layer: 12
   m_Name: Enemy_Boss
   m_TagString: Untagged
@@ -5773,6 +5774,7 @@ MonoBehaviour:
     - operation: 1
       Percent: 0.8
       action: 1
+      abilityToUse: 0
       behaviorToChangeTo: 0
     manaTriggers: []
     staminaTriggers: []
@@ -5825,6 +5827,19 @@ MonoBehaviour:
   DistanceOfSight: 10
   AmountOfSightRays: 20
   lever: {fileID: 0}
+--- !u!114 &9201301145353575721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9201301145353575719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5716501a1ddd10340af33f08bf1ac3c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isPlayer: 0
 --- !u!4 &9201301145353575722
 Transform:
   m_ObjectHideFlags: 0

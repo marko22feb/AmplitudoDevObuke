@@ -7,16 +7,34 @@ public class DamageComponent : MonoBehaviour
     private bool CanDealDamage = true;
     private float iFrames = 2f;
     public bool isTrap = false;
+    public bool DestroySelfOnImpact = false;
     public float DamageByTrap = 20f;
+
+    [HideInInspector]
+    public GameObject owner;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!CanDealDamage) return;
-        StatComponent stats = GetComponent<StatComponent>();
-        if (stats == null) return;
-        stats.ModifyBy(Stats.health, isTrap? -DamageByTrap : -collision.GetComponent<StatComponent>().DamageAmount);
-        StartCoroutine(DelayDamage());
-        StartCoroutine(iFramesAnim(gameObject));
+        StatComponent stats = collision.gameObject.GetComponent<StatComponent>();
+        if (stats == null)
+        {
+            if (collision.gameObject != owner)
+            {
+                Destroy(gameObject);
+            }
+            return;
+        }
+        else
+        {
+            if (collision.gameObject != owner)
+            {
+                stats.ModifyBy(Stats.health, isTrap ? -DamageByTrap : -collision.GetComponent<StatComponent>().DamageAmount);
+                StartCoroutine(DelayDamage());
+                StartCoroutine(iFramesAnim(collision.gameObject));
+                Destroy(gameObject);
+            }
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

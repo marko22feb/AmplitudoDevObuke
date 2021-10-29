@@ -60,7 +60,6 @@ public class EnemyMovement : MonoBehaviour
             MovementInterrupted = false;
         }
 
-        Debug.Log("Patroling");
         switch (movementType)
         {
             case MovementType.patrol:

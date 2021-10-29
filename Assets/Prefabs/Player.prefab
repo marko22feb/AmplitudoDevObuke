@@ -63,6 +63,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5bfe802e06301340a3cf07c1a8bd073, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &63146041541867982
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 242406400789558913}
+  m_Layer: 13
+  m_Name: AbilitySlot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &242406400789558913
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 63146041541867982}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.589, y: -0.27, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 581277339573779552}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &581277339573779557
 GameObject:
   m_ObjectHideFlags: 0
@@ -80,6 +110,7 @@ GameObject:
   - component: {fileID: 329703923}
   - component: {fileID: 462241824}
   - component: {fileID: -3998016691603148416}
+  - component: {fileID: 748585080}
   m_Layer: 13
   m_Name: Player
   m_TagString: Player
@@ -99,6 +130,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 726022681}
+  - {fileID: 242406400789558913}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -142,7 +174,9 @@ MonoBehaviour:
   jumpHeight: 15
   airControl: 0.5
   velocityClamp: {x: -8, y: 8}
+  rigid: {fileID: 0}
   control: {fileID: 0}
+  TestingAndroid: 0
 --- !u!212 &581277339573779556
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -261,6 +295,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InteractCanvasPrefab: {fileID: 3228924760593674820, guid: 9815eacae5ca08348a01dd4b84965317, type: 3}
   WeaponSlotAC: {fileID: 4451944820235797489}
+  TestingAndroid: 0
 --- !u!61 &-3998016691603148416
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -287,3 +322,15 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.85, y: 0.9}
   m_EdgeRadius: 0
+--- !u!114 &748585080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 581277339573779557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5716501a1ddd10340af33f08bf1ac3c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

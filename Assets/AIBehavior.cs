@@ -34,10 +34,12 @@ public class AIBehavior : MonoBehaviour
     private bool SightLoss = false;
     [HideInInspector]
     public Lever lever;
+    private AbilityComponent ability;
    
 
     void Start()
     {
+        ability = GetComponent<AbilityComponent>();
         OnBehaviorChange(DefaultBehavior);
 
         rigid = transform.parent.GetComponent<Rigidbody2D>();
@@ -233,6 +235,7 @@ public class AIBehavior : MonoBehaviour
                     case AIActionToTake.usePotion:
                         break;
                     case AIActionToTake.useAbility:
+                        ability.OnAbilityUse(i.abilityToUse);
                         canBeStunned = true;
                         lever.IsActive = true;
                         lever.UpdateVisuals();

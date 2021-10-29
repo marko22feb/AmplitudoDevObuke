@@ -103,6 +103,13 @@ public class GameController : MonoBehaviour
         }
     }
 
+    public static float MapClampRanged(float value, float inMin, float inMax, float outMin, float outMax)
+    {
+        float percent = Mathf.InverseLerp(inMin, inMax, value);
+        float outValue = Mathf.Lerp(outMin, outMax, percent);
+        return outValue;
+    }
+
     public void OnCoinsPickUp(int amount)
     {
         CoinsCount = CoinsCount + amount;
@@ -201,6 +208,8 @@ public enum Direction { forward, backward, left, right };
 public enum EnemyType { ground, jumping, flying };
 public enum PatrolType { looping, backAndForth, single };
 public enum MovementType { patrol, freestyle };
+[Serializable]
+public enum Abilities { bullet, multibullet, bulletRain, bulletRainWave, bulletRainWaveRandomized, NULL};
 
 [Serializable]
 public enum MainMenuButtonType { Continue, newgame, multiplayer, settings, exit };
@@ -220,6 +229,7 @@ public struct OnStatTrigger
     public float Percent;
     public AIActionToTake action;
 
+    public Abilities abilityToUse;
     public BehaviorType behaviorToChangeTo;
 }
 

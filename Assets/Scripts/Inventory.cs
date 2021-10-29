@@ -159,6 +159,13 @@ public enum EquipType
 }
 
 [System.Serializable]
+public struct WeaponData
+{
+    public Abilities bullet;
+    public float rateOfFire;
+}
+
+[System.Serializable]
 public struct ConsumableData
 {
     public Stats stat;
@@ -176,6 +183,7 @@ public struct ItemData
     public Sprite Icon;
 
     public ConsumableData consumeData;
+    public WeaponData weaponData;
     public GameObject weaponPrefab;
 
     public ItemData(int itemID)
@@ -186,6 +194,7 @@ public struct ItemData
         MaxStack = 1;
         Icon = null;
         consumeData = new ConsumableData();
+        weaponData = new WeaponData();
         weaponPrefab = null;
     }
 }

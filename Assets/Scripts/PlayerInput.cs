@@ -14,7 +14,11 @@ public class PlayerInput : MonoBehaviour
     private StatComponent statComp;
     public bool TestingAndroid = false;
 
+    private AbilityComponent ability;
     private InputActions keybindings;
+    public Abilities equipedAbility = Abilities.NULL;
+    public float abilityRateOfFire = 0.2f;
+    private bool isUsingAbility = false;
 
     public void ActivateInteract(InteractableObject ob)
     {
@@ -34,8 +38,11 @@ public class PlayerInput : MonoBehaviour
 
     private void Start()
     {
+        ability = GetComponent<AbilityComponent>();
         keybindings = InputController.inputs.keybindings;
         keybindings.Actions.Debug.started += OnDebug;
+        keybindings.Actions.Shoot.started += Shoot;
+
     }
 
     private void OnDebug(InputAction.CallbackContext obj)
@@ -134,8 +141,24 @@ public class PlayerInput : MonoBehaviour
         }
     }
 
+    public void Shoot(InputAction.CallbackContext obj)
+    {
+        if (equipedAbility != Abilities.NULL && !isUsingAbility)
+        {
+            ability.OnAbilityUse(equipedAbility);
+            StartCoroutine(rateOfFire(abilityRateOfFire));
+        }
+    }
+
     public void CanReEnterInventory ()
     {
         InventoryAnimation = false;
+    }
+
+    IEnumerator rateOfFire(float delay)
+    {
+        isUsingAbility = true;
+        yield return new WaitForSeconds(delay);
+        isUsingAbility = false;
     }
 }
