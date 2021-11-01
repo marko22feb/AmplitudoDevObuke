@@ -338,7 +338,7 @@ Transform:
   m_LocalScale: {x: 10000, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &159602358
 GameObject:
@@ -3902,7 +3902,7 @@ Transform:
   - {fileID: 487901362}
   - {fileID: 241770887}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1110851649
 GameObject:
@@ -4465,49 +4465,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2504309626304095874, guid: 95c5e79c72f404142b0bede6532d9889, type: 3}
   m_PrefabInstance: {fileID: 2504309625663356050}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1513027273
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1513027275}
-  - component: {fileID: 1513027274}
-  m_Layer: 0
-  m_Name: PickUpItem
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1513027274
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1513027273}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ddbaf30e9fc1304abea9d267458bd3f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1513027275
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1513027273}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.3654327, y: 4.7898803, z: -0.8824634}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1829458907
 GameObject:
   m_ObjectHideFlags: 0
@@ -5592,7 +5549,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7272050867107499603, guid: f8e18a4408cf7a24f992d568871cee16, type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 7272050867107499603, guid: f8e18a4408cf7a24f992d568871cee16, type: 3}
       propertyPath: m_LocalPosition.x

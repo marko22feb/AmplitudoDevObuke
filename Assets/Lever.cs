@@ -18,7 +18,7 @@ public class Lever : InteractableObject
      void Awake()
     {
         render = GetComponent<SpriteRenderer>();
-        bossBehavior.lever = this;
+       // bossBehavior.lever = this;
         UpdateVisuals();
     }
 

@@ -21,7 +21,8 @@ public class DamageComponent : MonoBehaviour
         {
             if (collision.gameObject != owner)
             {
-                Destroy(gameObject);
+                if (DestroySelfOnImpact)
+                    Destroy(gameObject);
             }
             return;
         }
@@ -32,6 +33,7 @@ public class DamageComponent : MonoBehaviour
                 stats.ModifyBy(Stats.health, isTrap ? -DamageByTrap : -collision.GetComponent<StatComponent>().DamageAmount);
                 StartCoroutine(DelayDamage());
                 StartCoroutine(iFramesAnim(collision.gameObject));
+                if (DestroySelfOnImpact)
                 Destroy(gameObject);
             }
         }

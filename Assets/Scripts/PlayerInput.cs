@@ -101,7 +101,7 @@ public class PlayerInput : MonoBehaviour
         if (GameController.control.equipData[slot].Amount > 0)
         {
             ItemData itemData = Inventory.inv.GetItem(GameController.control.equipData[slot].ItemID);
-            if (statComp.CurrentHealth == statComp.MaximumHealth) return;
+            if (statComp.HealthStat.currentValue == statComp.HealthStat.maximumValue) return;
             statComp.ModifyBy(itemData.consumeData.stat, itemData.consumeData.changeBy);
             InventoryData slotData = GameController.control.equipData[slot];
             slotData.Amount -= 1;
@@ -145,8 +145,13 @@ public class PlayerInput : MonoBehaviour
     {
         if (equipedAbility != Abilities.NULL && !isUsingAbility)
         {
-            ability.OnAbilityUse(equipedAbility);
-            StartCoroutine(rateOfFire(abilityRateOfFire));
+            if (statComp.GetStatValue(Stats.mana) >= 5f)
+            {
+                statComp.ModifyBy(Stats.mana, -5f);
+
+                ability.OnAbilityUse(equipedAbility);
+                StartCoroutine(rateOfFire(abilityRateOfFire));
+            }
         }
     }
 

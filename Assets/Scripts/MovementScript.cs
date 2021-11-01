@@ -52,6 +52,7 @@ public class MovementScript : MonoBehaviour
     private void Update()
     {
         CheckForGroundCollision();
+
         if (GameController.control.IsInputEnabled)
         {
             if (Application.platform != RuntimePlatform.Android && !TestingAndroid)
@@ -70,7 +71,12 @@ public class MovementScript : MonoBehaviour
                     if (Input.GetKeyUp(KeyCode.D)) DetectDoubleClick(Direction.right, out Detected);
                     if (Detected) return;
 
-                    Movement(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+                    float ver = 0;
+                    if (Input.GetKeyDown(KeyCode.W))
+                    {
+                        ver = Input.GetAxis("Vertical");
+                    }
+                    Movement(Input.GetAxis("Horizontal"), ver);
                 }
 
                 SetCrouched(down);

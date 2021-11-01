@@ -296,6 +296,8 @@ MonoBehaviour:
   InteractCanvasPrefab: {fileID: 3228924760593674820, guid: 9815eacae5ca08348a01dd4b84965317, type: 3}
   WeaponSlotAC: {fileID: 4451944820235797489}
   TestingAndroid: 0
+  equipedAbility: 5
+  abilityRateOfFire: 0.2
 --- !u!61 &-3998016691603148416
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -309,7 +311,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.1, y: -0.55}
+  m_Offset: {x: -0.1, y: -0.52}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -334,3 +336,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5716501a1ddd10340af33f08bf1ac3c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPlayer: 0
