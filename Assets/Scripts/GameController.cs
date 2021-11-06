@@ -13,6 +13,8 @@ public class GameController : MonoBehaviour
 
     public GameObject Player;
     public int CoinsCount;
+    public int LivesCount;
+    public int LastCheckpoint = -1;
     public int MaxBeltSlotItems;
 
     public List<AudioClip> backgroundmusic = new List<AudioClip>();
@@ -30,6 +32,8 @@ public class GameController : MonoBehaviour
     [HideInInspector]
     public bool IsNewGame = false;
     public bool IsMainMenu = false;
+   // [HideInInspector]
+    public bool GameOver = false;
     public string Username = "User";
     [HideInInspector]
     public bool IsInputEnabled = true;
@@ -90,13 +94,31 @@ public class GameController : MonoBehaviour
                 settingsCanvas = GameObject.Find("SettingsCanvas");
                 if (settingsCanvas == null) settingsCanvas = Instantiate(settingsPrefab);
 
+                bool CanLoad = false;
+
                 if (!IsNewGame)
                 {
-                    bool CanLoad;
                     LoadGame(out CanLoad);
                 }
 
                 Player = GameObject.Find("Player");
+
+                if (CanLoad)
+                {
+                    Checkpoint[] checkpoints = GameObject.FindObjectsOfType<Checkpoint>();
+
+                    foreach (var item in checkpoints)
+                    {
+                        Debug.Log("Checkpoints Check");
+                        if (item.CheckpointID == LastCheckpoint)
+                        {
+                            Player.transform.position = item.transform.position;
+                           
+                            break;
+                        }
+                    }
+                }
+                
                 coinsText = GameObject.Find("CoinsText").GetComponent<Text>();
                 UpdateCoinText();
             }
@@ -113,8 +135,23 @@ public class GameController : MonoBehaviour
     public void OnCoinsPickUp(int amount)
     {
         CoinsCount = CoinsCount + amount;
-        SaveGame();
+        if (CoinsCount >= 100)
+        {
+            CoinsCount -= 100;
+            LivesCount += 1;
+            SaveLives();
+        }
+
         UpdateCoinText();
+    }
+
+    public void ReduceLife()
+    {
+        if (LivesCount > 0)
+        {
+            LivesCount -= 1;
+            SaveLives();
+        }
     }
 
     void UpdateCoinText() { 
@@ -122,13 +159,42 @@ public class GameController : MonoBehaviour
         coinsText.color = newTextColor;
     }
 
-    void SaveGame()
+    public void SaveGame()
     {
         BinaryFormatter binaryFormatter = new BinaryFormatter();
-        FileStream file = File.Create(Application.persistentDataPath + Username + ".123");
         SaveGame save = new SaveGame();
 
+        if (File.Exists(Application.persistentDataPath + Username + ".123"))
+        {
+            FileStream Loadedfile = File.Open(Application.persistentDataPath + Username + ".123", FileMode.Open);
+            save = (SaveGame)binaryFormatter.Deserialize(Loadedfile);
+            Loadedfile.Close();
+        }
+
+        FileStream file = File.Create(Application.persistentDataPath + Username + ".123");
+
         save.CoinsAmount = CoinsCount;
+        save.checkpointIndex = LastCheckpoint;
+        save.LastPlayedScene = SceneManager.GetActiveScene().buildIndex;
+
+        binaryFormatter.Serialize(file, save);
+        file.Close();
+    }
+
+    public void SaveLives()
+    {
+        BinaryFormatter binaryFormatter = new BinaryFormatter();
+        SaveGame save = new SaveGame();
+
+        if (File.Exists(Application.persistentDataPath + Username + ".123")) { 
+            FileStream Loadedfile = File.Open(Application.persistentDataPath + Username + ".123", FileMode.Open);
+            save = (SaveGame)binaryFormatter.Deserialize(Loadedfile);
+            Loadedfile.Close();
+          }
+
+        FileStream file = File.Create(Application.persistentDataPath + Username + ".123");
+
+        save.LivesAmount = LivesCount;
 
         binaryFormatter.Serialize(file, save);
         file.Close();
@@ -145,6 +211,8 @@ public class GameController : MonoBehaviour
             SaveGame save = (SaveGame)binaryFormatter.Deserialize(file);
 
             CoinsCount = save.CoinsAmount;
+            LivesCount = save.LivesAmount;
+            LastCheckpoint = save.checkpointIndex;
 
             file.Close();
 
@@ -188,8 +256,9 @@ public class GameController : MonoBehaviour
 public class SaveGame
 {
     public int CoinsAmount;
+    public int LivesAmount;
     public int LastPlayedScene;
-    public float PlayerHealth;
+    public int checkpointIndex;
 }
 
 [Serializable]
@@ -249,4 +318,6 @@ public struct BehaviorConfig
     public List<OnStatTrigger> healthTriggers;
     public List<OnStatTrigger> manaTriggers;
     public List<OnStatTrigger> staminaTriggers;
+
+    public float FollowDistance;
 }

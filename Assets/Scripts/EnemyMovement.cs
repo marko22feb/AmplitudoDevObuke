@@ -35,11 +35,16 @@ public class EnemyMovement : MonoBehaviour
     {
       if (movementType == MovementType.patrol)
         {
-            if (patrolRoute == null) {
-                throw new System.NotImplementedException();
+            if (patrolRoute == null)
+            {
+                Debug.Log("Patrol Route is missing, movement type was set to Patrol: " + gameObject.name);
+                movementType = MovementType.freestyle;
             }
-            patrolPointCount = patrolRoute.childCount;
-            GetClosestPatrolPoint();
+            else
+            {
+                patrolPointCount = patrolRoute.childCount;
+                GetClosestPatrolPoint();
+            }
         }
 
         StartCoroutine(DelayedOptimization(2f));

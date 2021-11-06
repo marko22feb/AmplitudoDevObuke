@@ -18,7 +18,16 @@ public class Lever : InteractableObject
      void Awake()
     {
         render = GetComponent<SpriteRenderer>();
-       // bossBehavior.lever = this;
+        if (bossBehavior != null)
+        {
+            bossBehavior.lever = this;
+        }
+        else
+        {
+            Debug.Log("Boss is missing.");
+            Destroy(gameObject);
+            return;
+        }
         UpdateVisuals();
     }
 

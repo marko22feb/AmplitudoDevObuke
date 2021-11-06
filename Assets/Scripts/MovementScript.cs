@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class MovementScript : MonoBehaviour
 {
@@ -29,11 +30,16 @@ public class MovementScript : MonoBehaviour
     public bool TestingAndroid = false;
     private float DashDistance = 3f;
     private bool isOnGround = false;
+    private InputActions keybinds;
+    private InputAction movementAction;
 
     private void Start()
     {
 
         Application.targetFrameRate = 100;
+        keybinds = InputController.inputs.keybindings;
+        movementAction = keybinds.Actions.Movement;
+      //  movementAction.started += DetectDoubleClick;
     }
 
     private void Awake()
@@ -60,7 +66,7 @@ public class MovementScript : MonoBehaviour
                 bool down = false;
                 if (isOnGround)
                 {
-                    if (Input.GetKey(KeyCode.S)) down = true;
+                    if (movementAction.ReadValue<Vector2>().y < 0) down = true;
                 }
 
                 if (!down)
@@ -72,11 +78,11 @@ public class MovementScript : MonoBehaviour
                     if (Detected) return;
 
                     float ver = 0;
-                    if (Input.GetKeyDown(KeyCode.W))
+                    if (movementAction.ReadValue<Vector2>().y > 0)
                     {
-                        ver = Input.GetAxis("Vertical");
+                        ver = movementAction.ReadValue<Vector2>().y;
                     }
-                    Movement(Input.GetAxis("Horizontal"), ver);
+                    Movement(movementAction.ReadValue<Vector2>().x, ver);
                 }
 
                 SetCrouched(down);

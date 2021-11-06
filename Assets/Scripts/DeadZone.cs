@@ -7,6 +7,9 @@ public class DeadZone : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        if (collision.GetComponent<StatComponent>() != null)
+        {
+            collision.GetComponent<StatComponent>().ModifyBy(Stats.health, -2147483647);
+        }
     }
 }

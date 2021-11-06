@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class StatComponent : MonoBehaviour
 {
@@ -13,11 +14,17 @@ public class StatComponent : MonoBehaviour
 
     [SerializeField]
     bool isPlayer;
+    public string EnemyName = "defaultName";
+    public bool isBoss = false;
+    public bool isDead = false;
 
     AIBehavior behavior;
+    Animator AC;
 
     private void Awake()
     {
+        AC = GetComponent<Animator>();
+
         if (isPlayer)
         {
             HealthStat.SetStatBar(GameObject.Find("PlayerHealthBar").GetComponent<StatBar>());
@@ -26,8 +33,15 @@ public class StatComponent : MonoBehaviour
         } else
         {
             behavior = GetComponent<AIBehavior>();
-            // CurrentHealth = MaximumHealth;
-            //  healthBar = transform.parent.Find("EnemyCanvas").transform.Find("HealthSlider").GetComponent<Slider>();
+
+            if (isBoss)
+            {
+                HealthStat.SetStatBar(GameObject.Find("BossStatBar").GetComponent<StatBar>());
+            }
+            else
+            {
+                HealthStat.SetStatBar(transform.parent.Find("EnemyCanvas").Find("HealthStatBar").GetComponent<StatBar>());
+            }
         }
     }
     private void Start()
@@ -46,13 +60,17 @@ public class StatComponent : MonoBehaviour
         switch (stat)
         {
             case Stats.health:
-                HealthStat.statBar.UpdateBarVisuals(HealthStat.currentValue, HealthStat.maximumValue);
+                if (HealthStat.statBar != null)
+                    HealthStat.statBar.UpdateBarVisuals(HealthStat.currentValue, HealthStat.maximumValue);
+                else Debug.Log("Health Bar Missing : " + gameObject.name);
                 break;
             case Stats.stamina:
+                if (StaminaStat.statBar != null)
                 StaminaStat.statBar.UpdateBarVisuals(StaminaStat.currentValue, StaminaStat.maximumValue);
                 break;
             case Stats.mana:
-                ManaStat.statBar.UpdateBarVisuals(ManaStat.currentValue, ManaStat.maximumValue);
+                if (ManaStat.statBar != null)
+                    ManaStat.statBar.UpdateBarVisuals(ManaStat.currentValue, ManaStat.maximumValue);
                 break;
             default:
                 break;
@@ -122,6 +140,7 @@ public class StatComponent : MonoBehaviour
         {
             case Stats.health:
                 HealthStat = statToEdit;
+                if (HealthStat.currentValue <= 0) OnDeath();
                 break;
             case Stats.stamina:
                 StaminaStat = statToEdit;
@@ -134,6 +153,50 @@ public class StatComponent : MonoBehaviour
         }
 
         UpdateStats(stat);
+    }
+
+    public void OnDeath()
+    {
+        if (isPlayer)
+        {
+            GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
+        }
+        else
+        {
+            if (isBoss) 
+            {
+                HealthStat.statBar.transform.parent.GetComponent<CanvasGroup>().alpha = 0;
+            } else
+            {
+
+            }
+            transform.parent.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
+        }
+
+        AC.SetBool("IsDead", true);
+        isDead = true;
+    }
+
+    public void DestroySelf()
+    {
+        if (isPlayer)
+        {
+            if (GameController.control.LivesCount <= 0)
+            {
+                GameObject.Find("Canvas_MainHUD").GetComponent<Canvas>().enabled = false;
+                GameObject.Find("DeathCanvas").GetComponent<Canvas>().enabled = true;
+                GameController.control.IsInputEnabled = false;
+                GameController.control.GameOver = true;
+                Destroy(gameObject);
+            }
+            else
+            {
+                GameController.control.GameOver = false;
+                GameController.control.ReduceLife();
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
+        }
+        else Destroy(transform.parent.gameObject);
     }
 }
 
