@@ -114,7 +114,7 @@ public class @InputActions : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""e523f221-766b-4d5b-9cf0-21e0e8020b6d"",
-                    ""path"": ""<Keyboard>/u"",
+                    ""path"": ""<Keyboard>/r"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

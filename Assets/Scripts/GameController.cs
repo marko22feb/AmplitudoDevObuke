@@ -28,11 +28,11 @@ public class GameController : MonoBehaviour
     public List<ItemData> items;
     public List<InventoryData> inventoryData;
     public List<InventoryData> equipData;
+    public List<int> BossesDead;
 
-    [HideInInspector]
     public bool IsNewGame = false;
     public bool IsMainMenu = false;
-   // [HideInInspector]
+    [HideInInspector]
     public bool GameOver = false;
     public string Username = "User";
     [HideInInspector]
@@ -175,6 +175,7 @@ public class GameController : MonoBehaviour
 
         save.CoinsAmount = CoinsCount;
         save.checkpointIndex = LastCheckpoint;
+        save.BossesDead = BossesDead;
         save.LastPlayedScene = SceneManager.GetActiveScene().buildIndex;
 
         binaryFormatter.Serialize(file, save);
@@ -213,6 +214,7 @@ public class GameController : MonoBehaviour
             CoinsCount = save.CoinsAmount;
             LivesCount = save.LivesAmount;
             LastCheckpoint = save.checkpointIndex;
+            BossesDead = save.BossesDead;
 
             file.Close();
 
@@ -259,6 +261,7 @@ public class SaveGame
     public int LivesAmount;
     public int LastPlayedScene;
     public int checkpointIndex;
+    public List<int> BossesDead;
 }
 
 [Serializable]
@@ -268,15 +271,20 @@ public class SaveItems
 
     public SaveItems()
     {
+
     }
 }
 
 public enum Stats { health, stamina, mana};
-public enum InteractType { none, Door, Lever, Ladders };
+public enum InteractType { none, Door, Lever, Ladders, Dialogue };
 public enum Direction { forward, backward, left, right };
 public enum EnemyType { ground, jumping, flying };
 public enum PatrolType { looping, backAndForth, single };
+[Serializable]
+public enum LockedDoor { enemyDead, hasItem, needCoins, custom };
 public enum MovementType { patrol, freestyle };
+
+public enum MovementMode { ground, ladder, falling, swimming}
 [Serializable]
 public enum Abilities { bullet, multibullet, bulletRain, bulletRainWave, bulletRainWaveRandomized, NULL};
 

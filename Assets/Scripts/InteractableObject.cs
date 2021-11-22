@@ -6,11 +6,13 @@ public class InteractableObject : MonoBehaviour
 {
     public InteractType interactType;
     float DoOnceDuration = 1f;
+    [HideInInspector]
+    public GameObject Player;
 
     [HideInInspector]
     public bool DoOnce = false;
 
-    private void Awake()
+    private void Start()
     {
         switch (interactType)
         {
@@ -25,6 +27,9 @@ public class InteractableObject : MonoBehaviour
             case InteractType.Ladders:
                 DoOnceDuration = 2f;
                 break;
+            case InteractType.Dialogue:
+                DoOnceDuration = 2f;
+                break;
             default:
                 break;
         }
@@ -32,14 +37,41 @@ public class InteractableObject : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.isTrigger)
-        GameController.control.Player.GetComponent<PlayerInput>().ActivateInteract(this);
+        if (collision.tag == "Player")
+        {
+            if (!collision.isTrigger)
+            {
+                Player = collision.gameObject;
+                if (Player.GetComponent<MovementScript>().movementMode != MovementMode.ladder)
+                {
+                    Player.GetComponent<PlayerInput>().ActivateInteract(this);
+                    OnTriggerCheck(collision);
+                }
+            }
+        }
+    }
+
+    public virtual void OnTriggerCheck (Collider2D collision)
+    {
+
+    }
+
+    public virtual void OnTriggerCheckExit (Collider2D collision)
+    {
+
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (!collision.isTrigger)
-            GameController.control.Player.GetComponent<PlayerInput>().ActivateInteract(null);
+        if (collision.tag == "Player")
+        {
+            if (!collision.isTrigger)
+            {
+                collision.gameObject.GetComponent<PlayerInput>().ActivateInteract(null);
+                OnTriggerCheckExit(collision);
+                Player = null;
+            }
+        }
     }
 
     public virtual void OnInteract()

@@ -16,6 +16,7 @@ public class StatComponent : MonoBehaviour
     bool isPlayer;
     public string EnemyName = "defaultName";
     public bool isBoss = false;
+    public int BossID = 0;
     public bool isDead = false;
 
     AIBehavior behavior;
@@ -166,6 +167,7 @@ public class StatComponent : MonoBehaviour
             if (isBoss) 
             {
                 HealthStat.statBar.transform.parent.GetComponent<CanvasGroup>().alpha = 0;
+                GameController.control.BossesDead.Add(BossID);
             } else
             {
 

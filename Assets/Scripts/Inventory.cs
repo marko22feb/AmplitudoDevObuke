@@ -45,6 +45,22 @@ public class Inventory : MonoBehaviour
         return data;
     }
 
+    public int FetchInventoryItem(int ItemID)
+    {
+        int amount = -1;
+
+        foreach (InventoryData item in GameController.control.inventoryData)
+        {
+            if (item.ItemID == ItemID)
+            {
+                amount = item.Amount;
+                break;
+            }
+        }
+
+        return amount;
+    }
+
     public void AddItem(InventoryData data)
     {
         int slotID = -1;

@@ -120,10 +120,9 @@ public class InputController : MonoBehaviour
 
     private void LoadKeybinds()
     {
-       
+       /*
         if (File.Exists(Application.persistentDataPath + "Keybinds.123"))
         {
-
             BinaryFormatter binaryFormatter = new BinaryFormatter();
             FileStream file = File.Open(Application.persistentDataPath + "Keybinds.123", FileMode.Open);
             KeybindSave save = (KeybindSave)binaryFormatter.Deserialize(file);
@@ -136,6 +135,7 @@ public class InputController : MonoBehaviour
             
             file.Close();
         }
+       */
     }
 }
 
