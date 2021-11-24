@@ -6761,12 +6761,36 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 420631867, guid: e7018ccca4b03b24aa23627604a3e19a, type: 3}
+      propertyPath: Choice_Event.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 420631867, guid: e7018ccca4b03b24aa23627604a3e19a, type: 3}
+      propertyPath: NPC_Dialogues.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 420631867, guid: e7018ccca4b03b24aa23627604a3e19a, type: 3}
+      propertyPath: Player_Choices.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 420631867, guid: e7018ccca4b03b24aa23627604a3e19a, type: 3}
+      propertyPath: Choice_Leades_To.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 420631867, guid: e7018ccca4b03b24aa23627604a3e19a, type: 3}
+      propertyPath: NPC_Dialogues.Array.data[2]
+      value: ssd
+      objectReference: {fileID: 0}
+    - target: {fileID: 420631867, guid: e7018ccca4b03b24aa23627604a3e19a, type: 3}
       propertyPath: Choice_Conditions.Array.size
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 420631867, guid: e7018ccca4b03b24aa23627604a3e19a, type: 3}
       propertyPath: Choice_Conditions.Array.data[2]
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 420631867, guid: e7018ccca4b03b24aa23627604a3e19a, type: 3}
+      propertyPath: Dialogue_Leades_ToChoices.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 524787158342195826, guid: e7018ccca4b03b24aa23627604a3e19a, type: 3}
       propertyPath: m_Name

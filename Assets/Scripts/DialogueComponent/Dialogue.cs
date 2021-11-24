@@ -5,20 +5,14 @@ using UnityEngine.UI;
 
 public class Dialogue : MonoBehaviour
 {
-    [SerializeField]
-    private List<string> NPC_Dialogues;
-    [SerializeField]
-    private List<string> Player_Choices;
+    public List<string> NPC_Dialogues;
+    public List<string> Player_Choices;
 
-    [SerializeField]
-    private List<int> Choice_Leades_To;
-    [SerializeField]
-    private List<IntList> Dialogue_Leades_ToChoices;
+    public List<int> Choice_Leades_To;
+    public List<IntList> Dialogue_Leades_ToChoices;
 
-    [SerializeField]
-    private List<int> Choice_Conditions;
-    [SerializeField]
-    private List<int> Choice_Event;
+    public List<int> Choice_Conditions;
+    public List<int> Choice_Event;
 
     private Text DialogueText;
     private Transform ChoicesPanel;
@@ -37,7 +31,7 @@ public class Dialogue : MonoBehaviour
 
     public void OnChoiceClick(int ChoiceID)
     {
-        //greater then --> greater
+ 
         if (Choice_Leades_To.Count > ChoiceID)
         {
             NextDialogue(Choice_Leades_To[ChoiceID]);
@@ -54,7 +48,6 @@ public class Dialogue : MonoBehaviour
 
     public void NextDialogue(int DialogueID)
     {
-        //greater then --> greater
         if (Dialogue_Leades_ToChoices.Count > DialogueID)
         {
             DialogueText.text = NPC_Dialogues[DialogueID];
