@@ -1,7 +1,9 @@
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -25,7 +27,24 @@ public class DialogueGraphView : GraphView
 
     private DialogueNode CreateNewNode(string Name, Vector2 PositionOnScreen)
     {
-        return new DialogueNode();
+        DialogueNode node = new DialogueNode()
+        {
+            title = Name,
+            GUID = Guid.NewGuid().ToString(),
+            DialogueText = "NPC Dialogue",
+            EntryNode = false
+        };
+
+        Port generatedPort = GetPortInstance(node, UnityEditor.Experimental.GraphView.Direction.Input, Port.Capacity.Multi);
+        generatedPort.portName = "Input";
+        node.outputContainer.Add(generatedPort);
+
+        node.RefreshExpandedState();
+        node.RefreshPorts();
+
+        GenerateOutPorts(node);
+
+        return node;
     }
 
     private DialogueNode CreateEntryNode()
@@ -38,21 +57,146 @@ public class DialogueGraphView : GraphView
             EntryNode = true
         };
 
-        Port generatedPort = GetPortInstance(node, UnityEditor.Experimental.GraphView.Direction.Output);
-        generatedPort.portName = "Next Dialogue";
-
-        node.outputContainer.Add(generatedPort);
-
-        node.RefreshExpandedState();
-        node.RefreshPorts();
+         GenerateOutPorts(node);
 
         node.SetPosition(new Rect(100, 200, 100, 200));
 
         return node;
     }
 
+    private void GenerateOutPorts(DialogueNode node)
+    {
+        TextField NPCDialogueTextField = new TextField("Dialogue Text : ");
+        NPCDialogueTextField.SetValueWithoutNotify("NPC Dialogue Here");
+
+        NPCDialogueTextField.RegisterValueChangedCallback(evt =>
+        {
+            node.DialogueText = evt.newValue;
+        }
+        );
+
+        node.titleButtonContainer.Add(NPCDialogueTextField);
+
+        string ChoiceText = "";
+
+        Button AddNewChoiceButton = new Button(clickEvent: () => { AddChoice(node, ChoiceText); });
+        AddNewChoiceButton.text = "New Choice";
+
+        node.titleButtonContainer.Add(AddNewChoiceButton);
+
+        TextField choiceTextField = new TextField("");
+        choiceTextField.RegisterValueChangedCallback(evt =>
+        {
+            ChoiceText = evt.newValue;
+        });
+
+        node.titleButtonContainer.Add(choiceTextField);
+
+        node.RefreshExpandedState();
+        node.RefreshPorts();
+    }
+
+    private void AddChoice(DialogueNode node, string ChoiceText)
+    {
+        Port generatedPort = GetPortInstance(node, UnityEditor.Experimental.GraphView.Direction.Output, Port.Capacity.Single);
+
+        Label portLabel = generatedPort.contentContainer.Q<Label>("type");
+        generatedPort.contentContainer.Remove(portLabel);
+
+        int outportCount = node.outputContainer.Query("connector").ToList().Count();
+        string outportName = string.IsNullOrEmpty(ChoiceText) ? "Choice " + outportCount : ChoiceText;
+
+
+
+        TextField textField = new TextField()
+        {
+            name = string.Empty,
+            value = outportName
+        };
+
+        textField.RegisterValueChangedCallback(evt =>
+        {
+            generatedPort.portName = evt.newValue;
+        });
+
+        generatedPort.contentContainer.Add(new Label(" "));
+        generatedPort.contentContainer.Add(textField);
+
+        IntegerField conditionField = new IntegerField()
+        {
+            name = string.Empty,
+            value = -1
+        };
+
+        IntegerField eventsField = new IntegerField()
+        {
+            name = string.Empty,
+            value = -1
+        };
+
+        eventsField.RegisterValueChangedCallback(evt =>
+        {
+            eventsField.value = evt.newValue;
+        }
+        );
+
+        conditionField.RegisterValueChangedCallback(evt =>
+        {
+            conditionField.value = evt.newValue;
+        }
+        );
+
+        generatedPort.contentContainer.Add(eventsField);
+        generatedPort.contentContainer.Add(new Label("Event Index"));
+
+
+        generatedPort.contentContainer.Add(conditionField);
+        generatedPort.contentContainer.Add(new Label("Condition Index"));
+
+        Button DeleteChoiceButton = new Button(clickEvent: () =>{ RemoveChoice(node, generatedPort); }) ;
+        DeleteChoiceButton.text = "X";
+
+        generatedPort.contentContainer.Add(DeleteChoiceButton);
+
+        generatedPort.portName = outportName;
+        node.outputContainer.Add(generatedPort);
+
+        node.RefreshExpandedState();
+        node.RefreshPorts();
+    }
+
+    private void RemoveChoice(DialogueNode node, Port portToDelete)
+    {
+        var targetEdge = edges.ToList().Where(x => x.output.portName == portToDelete.portName && x.output.node == portToDelete.node);
+
+        if (targetEdge.Any())
+        {
+            Edge edge = targetEdge.First();
+            edge.input.Disconnect(edge);
+            RemoveElement(targetEdge.First());
+        }
+
+        node.outputContainer.Remove(portToDelete);
+        node.RefreshExpandedState();
+        node.RefreshPorts();
+    }
+
     private Port GetPortInstance(DialogueNode node, UnityEditor.Experimental.GraphView.Direction nodeDirection, Port.Capacity capacity = Port.Capacity.Single)
     {
         return node.InstantiatePort(Orientation.Horizontal, nodeDirection, capacity, typeof(float));
+    }
+
+    public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
+    {
+        List<Port> compatiblePorts = new List<Port>();
+        Port startPortView = startPort;
+
+        ports.ForEach((port) =>
+        {
+            Port portView = port;
+            if (startPortView != portView && startPortView.node != portView.node) compatiblePorts.Add(port);
+        });
+
+        return compatiblePorts;
     }
 }

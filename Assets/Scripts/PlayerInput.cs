@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
-public class PlayerInput : MonoBehaviour
+public class PlayerInput : MonoBehaviour, IPointerClickHandler
 {
     private InteractableObject objectToInteractWith;
     public GameObject InteractCanvasPrefab;
@@ -165,5 +166,10 @@ public class PlayerInput : MonoBehaviour
         isUsingAbility = true;
         yield return new WaitForSeconds(delay);
         isUsingAbility = false;
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        Debug.Log("PlayerClicked");
     }
 }
