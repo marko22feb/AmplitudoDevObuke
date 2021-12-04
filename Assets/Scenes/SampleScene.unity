@@ -6765,6 +6765,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 420631867, guid: e7018ccca4b03b24aa23627604a3e19a, type: 3}
+      propertyPath: DialogueName
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 420631867, guid: e7018ccca4b03b24aa23627604a3e19a, type: 3}
       propertyPath: Choice_Event.Array.size
       value: 1
       objectReference: {fileID: 0}

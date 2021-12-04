@@ -22,32 +22,34 @@ public class DialogueGraphView : GraphView
 
    public void CreateNewDialogueNode(string Name, Vector2 PositionOnScreen)
     {
-        AddElement(CreateNewNode(Name, PositionOnScreen));
+        AddElement(CreateNewNode(Name, Guid.NewGuid().ToString(), PositionOnScreen));
     }
 
-    private DialogueNode CreateNewNode(string Name, Vector2 PositionOnScreen)
+    public DialogueNode CreateNewNode(string dialogueText, string newGUID, Vector2 PositionOnScreen)
     {
         DialogueNode node = new DialogueNode()
         {
-            title = Name,
-            GUID = Guid.NewGuid().ToString(),
-            DialogueText = "NPC Dialogue",
+            title = dialogueText,
+            GUID = newGUID,
+            DialogueText = dialogueText,
             EntryNode = false
         };
 
         Port generatedPort = GetPortInstance(node, UnityEditor.Experimental.GraphView.Direction.Input, Port.Capacity.Multi);
         generatedPort.portName = "Input";
-        node.outputContainer.Add(generatedPort);
+        node.inputContainer.Add(generatedPort);
+
+        node.SetPosition(new Rect(PositionOnScreen.x, PositionOnScreen.y, 100, 200));
 
         node.RefreshExpandedState();
         node.RefreshPorts();
 
-        GenerateOutPorts(node);
+        GenerateOutPorts(node, dialogueText);
 
         return node;
     }
 
-    private DialogueNode CreateEntryNode()
+    public DialogueNode CreateEntryNode()
     {
         DialogueNode node = new DialogueNode()
         {
@@ -57,17 +59,35 @@ public class DialogueGraphView : GraphView
             EntryNode = true
         };
 
-         GenerateOutPorts(node);
+         GenerateOutPorts(node, "First NPC Dialogue");
 
         node.SetPosition(new Rect(100, 200, 100, 200));
 
         return node;
     }
 
-    private void GenerateOutPorts(DialogueNode node)
+    public DialogueNode CreateEntryNode(string dialogueText, string newGUID, Vector2 Position)
+    {
+        DialogueNode node = new DialogueNode()
+        {
+            title = dialogueText,
+            GUID = newGUID,
+            DialogueText = dialogueText,
+            EntryNode = true
+        };
+
+        GenerateOutPorts(node, dialogueText);
+
+        node.SetPosition(new Rect(Position.x, Position.y, 100, 200));
+
+        return node;
+    }
+
+
+    private void GenerateOutPorts(DialogueNode node, string DialogueText)
     {
         TextField NPCDialogueTextField = new TextField("Dialogue Text : ");
-        NPCDialogueTextField.SetValueWithoutNotify("NPC Dialogue Here");
+        NPCDialogueTextField.SetValueWithoutNotify(DialogueText);
 
         NPCDialogueTextField.RegisterValueChangedCallback(evt =>
         {
@@ -96,7 +116,7 @@ public class DialogueGraphView : GraphView
         node.RefreshPorts();
     }
 
-    private void AddChoice(DialogueNode node, string ChoiceText)
+    public void AddChoice(DialogueNode node, string ChoiceText)
     {
         Port generatedPort = GetPortInstance(node, UnityEditor.Experimental.GraphView.Direction.Output, Port.Capacity.Single);
 

@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Dialogue : MonoBehaviour
 {
+    public string DialogueName;
+
     public List<string> NPC_Dialogues;
     public List<string> Player_Choices;
 
@@ -26,12 +30,30 @@ public class Dialogue : MonoBehaviour
 
     private void Start()
     {
+        if (File.Exists(Application.dataPath + "/Resources/Dialogues/" + DialogueName + ".bytes"))
+        {
+
+            BinaryFormatter binaryFormatter = new BinaryFormatter();
+            FileStream file = File.Open(Application.dataPath + "/Resources/Dialogues/" + DialogueName + ".bytes", FileMode.Open);
+            DialogueData data = (DialogueData)binaryFormatter.Deserialize(file);
+
+
+            NPC_Dialogues = data.save.NPC_Dialogues;
+            Player_Choices = data.save.Player_Choices;
+            Choice_Leades_To = data.save.Choice_Leades_To;
+            Dialogue_Leades_ToChoices = data.save.Dialogue_Leades_ToChoices;
+            Choice_Conditions = data.save.Choice_Conditions;
+            Choice_Event = data.save.Choice_Event;
+
+            file.Close();
+
+        }
         OnDialogueStart();
     }
 
     public void OnChoiceClick(int ChoiceID)
     {
- 
+
         if (Choice_Leades_To.Count > ChoiceID)
         {
             NextDialogue(Choice_Leades_To[ChoiceID]);
@@ -113,4 +135,14 @@ public class Dialogue : MonoBehaviour
 public class IntList
 {
     public List<int> LeadTo;
+
+    public IntList()
+    {
+        LeadTo = new List<int>();
+    }
+
+    public IntList(List<int> newEntry)
+    {
+        LeadTo = newEntry;
+    }
 }
