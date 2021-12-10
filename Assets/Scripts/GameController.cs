@@ -19,6 +19,8 @@ public class GameController : MonoBehaviour
 
     public List<AudioClip> backgroundmusic = new List<AudioClip>();
     private AudioSource audioSource;
+    private GameObject console;
+    public GameObject consoleText;
 
     public float OptimizationDistance = 25f;
 
@@ -68,6 +70,32 @@ public class GameController : MonoBehaviour
     {
         audioSource = GetComponent<AudioSource>();
         PlayBackgroundMusic();
+        StartCoroutine(delayedAd());
+
+        for (int i = 0; i < 30; i++)
+        {
+            Console("" + i);
+        }
+    }
+
+    public void Console(string Debug)
+    {
+        console = GameObject.Find("Console_Canvas");
+        if (console == null)
+        {
+            console = Instantiate(console);
+        }
+
+        GameObject consolePanel = console.transform.Find("Panel").transform.Find("Panel").gameObject;
+
+        GameObject temp = Instantiate(consoleText, consolePanel.transform);
+        temp.GetComponent<Text>().text = System.DateTime.Now + " : " + Debug;
+    }
+
+    private IEnumerator delayedAd()
+    {
+        yield return new WaitForSeconds(1);
+        GetComponent<AdController>().PlayRewardedAd(OnRewardAdComplete);
     }
 
     private IEnumerator PlayNextBackgroundMusic(float Duration)
@@ -144,6 +172,11 @@ public class GameController : MonoBehaviour
 
         UpdateCoinText();
     }
+
+    public void OnRewardAdComplete()
+    {
+        OnCoinsPickUp(40);
+    }    
 
     public void ReduceLife()
     {
